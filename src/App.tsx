@@ -267,14 +267,14 @@ function HeroSection({ onGetStarted, onLiveDemo }: { onGetStarted: () => void; o
 
             <h1 className="text-5xl md:text-7xl font-bold leading-tight">
               <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent animate-gradient">
-                Reinventing Libraries
+                Reinventing Library Management Automation
               </span>
               <br />
-              <span className="text-white">with AI Automation</span>
+              <span className="text-white">For RMD</span>
             </h1>
 
             <p className="text-xl md:text-2xl text-gray-300 max-w-2xl">
-              Smart cataloging, intelligent member management, and real-time analytics.
+              Browse Books, Request for Issue and Review
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-4">
