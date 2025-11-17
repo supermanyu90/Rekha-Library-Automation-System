@@ -153,30 +153,28 @@ function LoginForm({ onToggle }: { onToggle: () => void }) {
 
   return (
     <div className="relative w-full max-w-md">
-      <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 rounded-2xl blur-xl opacity-20 animate-pulse"></div>
-      <div className="relative backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl shadow-2xl p-8">
+      <div className="relative bg-white border border-gray-200 rounded-2xl shadow-2xl p-8">
         <div className="flex items-center justify-center mb-6">
-          <div className="relative">
-            <div className="absolute inset-0 bg-cyan-500 rounded-full blur-xl opacity-50"></div>
-            <LogIn className="relative w-12 h-12 text-cyan-400" />
+          <div className="bg-teal-100 p-3 rounded-full">
+            <LogIn className="w-12 h-12 text-teal-600" />
           </div>
         </div>
-        <h2 className="text-3xl font-bold text-center text-white mb-2">Welcome Back</h2>
-        <p className="text-center text-gray-300 mb-8">Sign in to access your library</p>
+        <h2 className="text-3xl font-bold text-center text-gray-900 mb-2">Welcome Back</h2>
+        <p className="text-center text-gray-600 mb-8">Sign in to access your library</p>
         <form onSubmit={handleSubmit} className="space-y-6">
-          {error && <div className="bg-red-500/10 border border-red-500/50 text-red-300 px-4 py-3 rounded-lg backdrop-blur-sm">{error}</div>}
+          {error && <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">{error}</div>}
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">Email Address</label>
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 backdrop-blur-sm transition" placeholder="you@example.com" />
+            <label className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition" placeholder="you@example.com" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">Password</label>
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 backdrop-blur-sm transition" placeholder="Enter your password" />
+            <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
+            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition" placeholder="Enter your password" />
           </div>
-          <button type="submit" disabled={loading} className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold py-3 px-4 rounded-lg transition disabled:opacity-50 shadow-lg shadow-cyan-500/50">{loading ? 'Signing in...' : 'Sign In'}</button>
+          <button type="submit" disabled={loading} className="w-full bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-400 hover:to-teal-500 text-white font-semibold py-3 px-4 rounded-lg transition disabled:opacity-50 shadow-lg">{loading ? 'Signing in...' : 'Sign In'}</button>
         </form>
         <div className="mt-6 text-center">
-          <p className="text-gray-300">Don't have an account? <button onClick={onToggle} className="text-cyan-400 hover:text-cyan-300 font-semibold transition">Sign up</button></p>
+          <p className="text-gray-600">Don't have an account? <button onClick={onToggle} className="text-teal-600 hover:text-teal-700 font-semibold transition">Sign up</button></p>
         </div>
       </div>
     </div>
@@ -209,38 +207,36 @@ function SignupForm({ onToggle }: { onToggle: () => void }) {
 
   return (
     <div className="relative w-full max-w-md">
-      <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 rounded-2xl blur-xl opacity-20 animate-pulse"></div>
-      <div className="relative backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl shadow-2xl p-8">
+      <div className="relative bg-white border border-gray-200 rounded-2xl shadow-2xl p-8">
         <div className="flex items-center justify-center mb-6">
-          <div className="relative">
-            <div className="absolute inset-0 bg-purple-500 rounded-full blur-xl opacity-50"></div>
-            <UserPlus className="relative w-12 h-12 text-purple-400" />
+          <div className="bg-teal-100 p-3 rounded-full">
+            <UserPlus className="w-12 h-12 text-teal-600" />
           </div>
         </div>
-        <h2 className="text-3xl font-bold text-center text-white mb-2">Create Account</h2>
-        <p className="text-center text-gray-300 mb-8">Join the future of libraries</p>
+        <h2 className="text-3xl font-bold text-center text-gray-900 mb-2">Create Account</h2>
+        <p className="text-center text-gray-600 mb-8">Join the future of libraries</p>
         <form onSubmit={handleSubmit} className="space-y-6">
-          {error && <div className="bg-red-500/10 border border-red-500/50 text-red-300 px-4 py-3 rounded-lg backdrop-blur-sm">{error}</div>}
+          {error && <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">{error}</div>}
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">Full Name</label>
-            <input type="text" value={fullName} onChange={(e) => setFullName(e.target.value)} required className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 backdrop-blur-sm transition" placeholder="John Doe" />
+            <label className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+            <input type="text" value={fullName} onChange={(e) => setFullName(e.target.value)} required className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition" placeholder="John Doe" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">Email Address</label>
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 backdrop-blur-sm transition" placeholder="you@example.com" />
+            <label className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition" placeholder="you@example.com" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">Password</label>
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 backdrop-blur-sm transition" placeholder="At least 6 characters" />
+            <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
+            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition" placeholder="At least 6 characters" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">Confirm Password</label>
-            <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 backdrop-blur-sm transition" placeholder="Re-enter your password" />
+            <label className="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
+            <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition" placeholder="Re-enter your password" />
           </div>
-          <button type="submit" disabled={loading} className="w-full bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-400 hover:to-pink-500 text-white font-semibold py-3 px-4 rounded-lg transition disabled:opacity-50 shadow-lg shadow-purple-500/50">{loading ? 'Creating account...' : 'Sign Up'}</button>
+          <button type="submit" disabled={loading} className="w-full bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-400 hover:to-teal-500 text-white font-semibold py-3 px-4 rounded-lg transition disabled:opacity-50 shadow-lg">{loading ? 'Creating account...' : 'Sign Up'}</button>
         </form>
         <div className="mt-6 text-center">
-          <p className="text-gray-300">Already have an account? <button onClick={onToggle} className="text-purple-400 hover:text-purple-300 font-semibold transition">Sign in</button></p>
+          <p className="text-gray-600">Already have an account? <button onClick={onToggle} className="text-teal-600 hover:text-teal-700 font-semibold transition">Sign in</button></p>
         </div>
       </div>
     </div>
@@ -392,12 +388,10 @@ function AuthScreen() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-black to-blue-900 flex items-center justify-center p-4 relative overflow-hidden">
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNi02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNnoiIHN0cm9rZT0iIzIyZDNlZSIgc3Ryb2tlLW9wYWNpdHk9Ii4xIi8+PC9nPjwvc3ZnPg==')] opacity-20"></div>
-
+    <div className="min-h-screen bg-white flex items-center justify-center p-4 relative overflow-hidden">
       <button
         onClick={() => setShowAuth(false)}
-        className="absolute top-8 left-8 text-cyan-400 hover:text-cyan-300 transition-colors flex items-center gap-2 group"
+        className="absolute top-8 left-8 text-teal-600 hover:text-teal-700 transition-colors flex items-center gap-2 group"
       >
         <span className="group-hover:-translate-x-1 transition-transform">←</span>
         Back to Home
