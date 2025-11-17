@@ -289,7 +289,7 @@ function HeroSection({ onGetStarted, onLiveDemo }: { onGetStarted: () => void; o
                 onClick={onLiveDemo}
                 className="px-8 py-4 rounded-lg font-semibold text-cyan-400 border-2 border-cyan-500/50 hover:border-cyan-400 hover:bg-cyan-500/10 transition-all hover:scale-105 backdrop-blur-sm"
               >
-                Live Demo
+                
               </button>
             </div>
 
