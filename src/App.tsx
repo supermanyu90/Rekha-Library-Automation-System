@@ -295,13 +295,13 @@ function HeroSection({ onGetStarted, onLiveDemo }: { onGetStarted: () => void; o
 
             <div className="flex items-center gap-8 pt-8 justify-center lg:justify-start">
               <div className="text-center">
-                <div className="text-3xl font-bold text-cyan-400">10K+</div>
+                <div className="text-3xl font-bold text-cyan-400">Industry Best</div>
                 <div className="text-sm text-gray-400">Books Cataloged</div>
               </div>
               <div className="w-px h-12 bg-gradient-to-b from-transparent via-cyan-500/50 to-transparent"></div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-purple-400">5K+</div>
-                <div className="text-sm text-gray-400">Active Members</div>
+                <div className="text-3xl font-bold text-purple-400"></div>
+                <div className="text-sm text-gray-400">Active M</div>
               </div>
               <div className="w-px h-12 bg-gradient-to-b from-transparent via-purple-500/50 to-transparent"></div>
               <div className="text-center">
