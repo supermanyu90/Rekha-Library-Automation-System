@@ -279,7 +279,7 @@ function HeroSection({ onGetStarted, onLiveDemo }: { onGetStarted: () => void; o
                 className="group relative px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg font-semibold text-white overflow-hidden transition-all hover:scale-105 hover:shadow-2xl hover:shadow-cyan-500/50"
               >
                 <span className="relative z-10 flex items-center justify-center gap-2">
-                  Get Started
+                  Create an Account
                   <span className="group-hover:translate-x-1 transition-transform">→</span>
                 </span>
                 <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity"></div>
