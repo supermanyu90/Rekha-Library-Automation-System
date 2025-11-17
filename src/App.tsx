@@ -682,33 +682,36 @@ function MainApp() {
       return;
     }
 
-    const { data, error } = await supabase.auth.signUp({
-      email: newMember.email,
-      password: newMember.password,
-      options: {
-        data: {
-          full_name: newMember.full_name,
+    try {
+      const apiUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/create-member`;
+
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+          'Content-Type': 'application/json',
         },
-      },
-    });
-
-    if (error) {
-      setMemberCreationStatus({ success: false, message: error.message });
-      return;
-    }
-
-    if (data.user) {
-      await supabase.rpc('confirm_user_email', {
-        user_id: data.user.id
+        body: JSON.stringify({
+          email: newMember.email,
+          password: newMember.password,
+          full_name: newMember.full_name,
+        }),
       });
 
-      setMemberCreationStatus({
-        success: true,
-        message: 'Member created successfully! They can now sign in with their credentials.'
-      });
+      const result = await response.json();
 
-      setNewMember({ email: '', password: '', full_name: '' });
-      setTimeout(() => setMemberCreationStatus(null), 3000);
+      if (result.success) {
+        setMemberCreationStatus({
+          success: true,
+          message: result.message
+        });
+        setNewMember({ email: '', password: '', full_name: '' });
+        setTimeout(() => setMemberCreationStatus(null), 3000);
+      } else {
+        setMemberCreationStatus({ success: false, message: result.message || 'Failed to create member' });
+      }
+    } catch (error: any) {
+      setMemberCreationStatus({ success: false, message: error.message || 'Failed to create member' });
     }
   };
 
