@@ -63,6 +63,21 @@ npm run dev
 npm run build
 ```
 
+### Test Accounts
+
+The database comes pre-loaded with test accounts for each role:
+
+| Role | Email | Password |
+|------|-------|----------|
+| Superadmin | `superadmin@library.com` | `superadmin123` |
+| Admin | `admin@library.com` | `admin123` |
+| Head Librarian | `headlibrarian@library.com` | `headlib123` |
+| Librarian | `librarian@library.com` | `librarian123` |
+
+**Note:** The database is persistent and hosted on Supabase. All data, including these test accounts and sample books, will remain available even after redeploying from GitHub.
+
+For complete database information, see [DATABASE_INFO.md](./DATABASE_INFO.md).
+
 ## Database Schema
 
 ### Tables
