@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import Hero from './components/Hero';
 import Login from './components/Login';
 import Layout from './components/Layout';
 import Dashboard from './components/Dashboard';
@@ -13,6 +14,7 @@ import Staff from './components/Staff';
 function MainApp() {
   const { user, staff, loading } = useAuth();
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [showHero, setShowHero] = useState(true);
 
   if (loading) {
     return (
@@ -26,6 +28,9 @@ function MainApp() {
   }
 
   if (!user || !staff) {
+    if (showHero) {
+      return <Hero onGetStarted={() => setShowHero(false)} />;
+    }
     return <Login />;
   }
 
