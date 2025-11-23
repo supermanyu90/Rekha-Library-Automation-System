@@ -72,37 +72,47 @@
 
 ## Setup Instructions
 
-### Creating Auth Users in Supabase
+### Automatic Setup (RECOMMENDED)
 
-**IMPORTANT:** The three permanent production users MUST be created for the live product.
+The easiest way to create all permanent admin users is to use the automated setup function:
 
-1. Go to **Supabase Dashboard** → **Authentication** → **Users**
-2. Click **"Add user"** → **"Create new user"**
-3. For each user above:
-   - Enter the email address
-   - Enter the password
-   - **CHECK** "Auto Confirm User" ✓
-   - Click "Create user"
-4. Copy the user's UUID from the created user details
-5. Link to staff record using SQL Editor:
+1. Make a POST request to the setup endpoint:
 
-```sql
--- Link Rekha Superadmin (REQUIRED FOR PRODUCTION)
-UPDATE staff SET user_id = 'PASTE_SUPERADMIN_UUID_HERE' WHERE email = 'superadmin@rekha.library';
-
--- Link Rekha Admin (REQUIRED FOR PRODUCTION)
-UPDATE staff SET user_id = 'PASTE_ADMIN_UUID_HERE' WHERE email = 'admin@rekha.library';
-
--- Link Rekha Librarian (REQUIRED FOR PRODUCTION)
-UPDATE staff SET user_id = 'PASTE_LIBRARIAN_UUID_HERE' WHERE email = 'librarian@rekha.library';
-
--- Optional: Link Demo Users
-UPDATE staff SET user_id = 'PASTE_UUID_HERE' WHERE email = 'admin@library.edu';
-UPDATE staff SET user_id = 'PASTE_UUID_HERE' WHERE email = 'linda.m@library.edu';
-UPDATE staff SET user_id = 'PASTE_UUID_HERE' WHERE email = 'james.b@library.edu';
-UPDATE staff SET user_id = 'PASTE_UUID_HERE' WHERE email = 'patricia.g@library.edu';
-UPDATE staff SET user_id = 'PASTE_UUID_HERE' WHERE email = 'david.l@library.edu';
+```bash
+curl -X POST https://YOUR_PROJECT_URL.supabase.co/functions/v1/setup-admin-users \
+  -H "Content-Type: application/json"
 ```
+
+Or visit this URL in your browser:
+```
+https://YOUR_PROJECT_URL.supabase.co/functions/v1/setup-admin-users
+```
+
+This will automatically:
+- Create all three permanent admin auth users
+- Link them to their staff records
+- Set up all passwords and permissions
+
+The function will return a status report showing which users were created successfully.
+
+### Manual Setup (Alternative Method)
+
+If you need to create users manually:
+
+1. Use the existing edge function to create individual users:
+
+```bash
+curl -X POST https://YOUR_PROJECT_URL.supabase.co/functions/v1/create-staff-user \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_ANON_KEY" \
+  -d '{
+    "email": "superadmin@rekha.library",
+    "password": "SuperAdmin@2025",
+    "staffId": 6
+  }'
+```
+
+Replace `staffId` with the appropriate staff ID from the database.
 
 ### Verify Setup
 
@@ -112,7 +122,7 @@ Run this query to check all users are properly linked:
 SELECT * FROM staff_with_permissions;
 ```
 
-All users should show "Active ✓" status after linking.
+All permanent production users should show "Active ✓" status after setup.
 
 ---
 
