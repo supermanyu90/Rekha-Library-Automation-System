@@ -1,11 +1,12 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
 import type { User } from '@supabase/supabase-js';
+import type { StaffRole } from '../lib/database.types';
 
 interface StaffMember {
-  id: string;
+  id: number;
   name: string;
-  role: 'admin' | 'librarian' | 'assistant';
+  role: StaffRole;
   email: string;
 }
 

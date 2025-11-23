@@ -1,235 +1,152 @@
-export type UserRole = 'member' | 'librarian' | 'head_librarian' | 'admin' | 'superadmin';
-export type ReservationStatus = 'pending' | 'approved' | 'rejected' | 'cancelled' | 'completed';
-export type RequestStatus = 'pending' | 'approved' | 'rejected';
+export type MembershipType = 'student' | 'faculty' | 'external';
+export type MemberStatus = 'active' | 'inactive' | 'blacklisted';
+export type StaffRole = 'admin' | 'librarian' | 'assistant';
+export type BorrowStatus = 'issued' | 'returned' | 'overdue';
+export type PaymentStatus = 'paid' | 'unpaid';
 
 export interface Database {
   public: {
     Tables: {
-      profiles: {
+      members: {
         Row: {
-          id: string;
+          id: number;
           full_name: string;
           email: string;
-          role: UserRole;
-          avatar_url: string | null;
-          accessibility_preferences: Record<string, any>;
-          created_at: string;
+          phone: string | null;
+          membership_type: MembershipType;
+          join_date: string;
+          status: MemberStatus;
         };
         Insert: {
-          id: string;
+          id?: number;
           full_name: string;
           email: string;
-          role?: UserRole;
-          avatar_url?: string | null;
-          accessibility_preferences?: Record<string, any>;
-          created_at?: string;
+          phone?: string | null;
+          membership_type?: MembershipType;
+          join_date?: string;
+          status?: MemberStatus;
         };
         Update: {
-          id?: string;
+          id?: number;
           full_name?: string;
           email?: string;
-          role?: UserRole;
-          avatar_url?: string | null;
-          accessibility_preferences?: Record<string, any>;
-          created_at?: string;
+          phone?: string | null;
+          membership_type?: MembershipType;
+          join_date?: string;
+          status?: MemberStatus;
+        };
+      };
+      staff: {
+        Row: {
+          id: number;
+          name: string;
+          role: StaffRole;
+          email: string;
+          user_id: string | null;
+        };
+        Insert: {
+          id?: number;
+          name: string;
+          role?: StaffRole;
+          email: string;
+          user_id?: string | null;
+        };
+        Update: {
+          id?: number;
+          name?: string;
+          role?: StaffRole;
+          email?: string;
+          user_id?: string | null;
         };
       };
       books: {
         Row: {
-          id: string;
+          id: number;
           title: string;
-          subtitle: string | null;
-          authors: string[];
+          author: string;
           isbn: string | null;
-          language: string;
-          description: string | null;
-          categories: string[];
-          cover_image: string | null;
-          pdf_file: string | null;
-          audiobook_file: string | null;
+          category: string | null;
+          publisher: string | null;
+          published_year: number | null;
           total_copies: number;
           available_copies: number;
-          added_by: string | null;
-          added_at: string;
-          is_active: boolean;
         };
         Insert: {
-          id?: string;
+          id?: number;
           title: string;
-          subtitle?: string | null;
-          authors?: string[];
+          author: string;
           isbn?: string | null;
-          language?: string;
-          description?: string | null;
-          categories?: string[];
-          cover_image?: string | null;
-          pdf_file?: string | null;
-          audiobook_file?: string | null;
+          category?: string | null;
+          publisher?: string | null;
+          published_year?: number | null;
           total_copies?: number;
           available_copies?: number;
-          added_by?: string | null;
-          added_at?: string;
-          is_active?: boolean;
         };
         Update: {
-          id?: string;
+          id?: number;
           title?: string;
-          subtitle?: string | null;
-          authors?: string[];
+          author?: string;
           isbn?: string | null;
-          language?: string;
-          description?: string | null;
-          categories?: string[];
-          cover_image?: string | null;
-          pdf_file?: string | null;
-          audiobook_file?: string | null;
+          category?: string | null;
+          publisher?: string | null;
+          published_year?: number | null;
           total_copies?: number;
           available_copies?: number;
-          added_by?: string | null;
-          added_at?: string;
-          is_active?: boolean;
         };
       };
-      reservations: {
+      borrow_records: {
         Row: {
-          id: string;
-          book_id: string;
-          user_id: string;
-          status: ReservationStatus;
-          start_date: string | null;
-          due_date: string | null;
-          processed_by: string | null;
-          processed_at: string | null;
-          created_at: string;
+          id: number;
+          member_id: number;
+          book_id: number;
+          issued_by: number;
+          issue_date: string;
+          due_date: string;
+          return_date: string | null;
+          status: BorrowStatus;
         };
         Insert: {
-          id?: string;
-          book_id: string;
-          user_id: string;
-          status?: ReservationStatus;
-          start_date?: string | null;
-          due_date?: string | null;
-          processed_by?: string | null;
-          processed_at?: string | null;
-          created_at?: string;
+          id?: number;
+          member_id: number;
+          book_id: number;
+          issued_by: number;
+          issue_date?: string;
+          due_date: string;
+          return_date?: string | null;
+          status?: BorrowStatus;
         };
         Update: {
-          id?: string;
-          book_id?: string;
-          user_id?: string;
-          status?: ReservationStatus;
-          start_date?: string | null;
-          due_date?: string | null;
-          processed_by?: string | null;
-          processed_at?: string | null;
-          created_at?: string;
+          id?: number;
+          member_id?: number;
+          book_id?: number;
+          issued_by?: number;
+          issue_date?: string;
+          due_date?: string;
+          return_date?: string | null;
+          status?: BorrowStatus;
         };
       };
-      reviews: {
+      fines: {
         Row: {
-          id: string;
-          book_id: string;
-          user_id: string;
-          rating: number;
-          title: string;
-          body: string | null;
-          moderated: boolean;
-          created_at: string;
+          id: number;
+          borrow_id: number;
+          fine_amount: number;
+          paid_status: PaymentStatus;
+          assessed_date: string;
         };
         Insert: {
-          id?: string;
-          book_id: string;
-          user_id: string;
-          rating: number;
-          title: string;
-          body?: string | null;
-          moderated?: boolean;
-          created_at?: string;
+          id?: number;
+          borrow_id: number;
+          fine_amount: number;
+          paid_status?: PaymentStatus;
+          assessed_date?: string;
         };
         Update: {
-          id?: string;
-          book_id?: string;
-          user_id?: string;
-          rating?: number;
-          title?: string;
-          body?: string | null;
-          moderated?: boolean;
-          created_at?: string;
-        };
-      };
-      requests: {
-        Row: {
-          id: string;
-          user_id: string;
-          requested_title: string;
-          reason: string | null;
-          status: RequestStatus;
-          created_at: string;
-        };
-        Insert: {
-          id?: string;
-          user_id: string;
-          requested_title: string;
-          reason?: string | null;
-          status?: RequestStatus;
-          created_at?: string;
-        };
-        Update: {
-          id?: string;
-          user_id?: string;
-          requested_title?: string;
-          reason?: string | null;
-          status?: RequestStatus;
-          created_at?: string;
-        };
-      };
-      activity_logs: {
-        Row: {
-          id: string;
-          actor_id: string;
-          action_type: string;
-          details: Record<string, any>;
-          created_at: string;
-        };
-        Insert: {
-          id?: string;
-          actor_id: string;
-          action_type: string;
-          details?: Record<string, any>;
-          created_at?: string;
-        };
-        Update: {
-          id?: string;
-          actor_id?: string;
-          action_type?: string;
-          details?: Record<string, any>;
-          created_at?: string;
-        };
-      };
-      settings: {
-        Row: {
-          id: string;
-          default_loan_days: number;
-          max_reservations_per_user: number;
-          allowed_file_types: string[];
-          csv_upload_enabled: boolean;
-          updated_at: string;
-        };
-        Insert: {
-          id?: string;
-          default_loan_days?: number;
-          max_reservations_per_user?: number;
-          allowed_file_types?: string[];
-          csv_upload_enabled?: boolean;
-          updated_at?: string;
-        };
-        Update: {
-          id?: string;
-          default_loan_days?: number;
-          max_reservations_per_user?: number;
-          allowed_file_types?: string[];
-          csv_upload_enabled?: boolean;
-          updated_at?: string;
+          id?: number;
+          borrow_id?: number;
+          fine_amount?: number;
+          paid_status?: PaymentStatus;
+          assessed_date?: string;
         };
       };
     };
