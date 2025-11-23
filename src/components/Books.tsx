@@ -33,7 +33,7 @@ export default function Books() {
     available_copies: '1',
   });
 
-  const canEdit = staff?.role === 'admin' || staff?.role === 'librarian';
+  const canEdit = staff?.role === 'superadmin' || staff?.role === 'admin' || staff?.role === 'librarian';
 
   useEffect(() => {
     fetchBooks();

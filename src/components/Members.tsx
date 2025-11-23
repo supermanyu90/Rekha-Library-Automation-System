@@ -28,7 +28,7 @@ export default function Members() {
     status: 'active',
   });
 
-  const canEdit = staff?.role === 'admin' || staff?.role === 'librarian';
+  const canEdit = staff?.role === 'superadmin' || staff?.role === 'admin' || staff?.role === 'librarian';
 
   useEffect(() => {
     fetchMembers();
