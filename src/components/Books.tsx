@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
-import { Plus, Edit, Trash2, Search, Barcode } from 'lucide-react';
+import { Plus, Edit, Trash2, Search, Barcode, Upload } from 'lucide-react';
 
 interface Book {
   id: string;
@@ -32,6 +32,10 @@ export default function Books() {
     total_copies: '1',
     available_copies: '1',
   });
+  const [showUploadModal, setShowUploadModal] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [uploadResults, setUploadResults] = useState<{ success: number; failed: number; errors: string[] } | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const canEdit = staff?.role === 'superadmin' || staff?.role === 'admin' || staff?.role === 'librarian';
 
@@ -127,6 +131,115 @@ export default function Books() {
     }
   };
 
+  const parseCSV = (text: string): any[] => {
+    const lines = text.split('\n').filter(line => line.trim());
+    if (lines.length < 2) return [];
+
+    const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+    const rows = [];
+
+    for (let i = 1; i < lines.length; i++) {
+      const values = lines[i].split(',').map(v => v.trim());
+      const row: any = {};
+
+      headers.forEach((header, index) => {
+        row[header] = values[index] || null;
+      });
+
+      rows.push(row);
+    }
+
+    return rows;
+  };
+
+  const handleCSVUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    setUploadResults(null);
+
+    try {
+      const text = await file.text();
+      const rows = parseCSV(text);
+
+      if (rows.length === 0) {
+        alert('CSV file is empty or invalid');
+        setUploading(false);
+        return;
+      }
+
+      const booksToInsert = [];
+      const errors: string[] = [];
+
+      for (let i = 0; i < rows.length; i++) {
+        const row = rows[i];
+        const lineNum = i + 2;
+
+        if (!row.title || !row.author) {
+          errors.push(`Line ${lineNum}: Missing required fields (title, author)`);
+          continue;
+        }
+
+        booksToInsert.push({
+          title: row.title,
+          author: row.author,
+          isbn: row.isbn || null,
+          category: row.category || null,
+          publisher: row.publisher || null,
+          published_year: row.published_year ? parseInt(row.published_year) : null,
+          total_copies: row.total_copies ? parseInt(row.total_copies) : 1,
+          available_copies: row.available_copies ? parseInt(row.available_copies) : (row.total_copies ? parseInt(row.total_copies) : 1),
+        });
+      }
+
+      if (booksToInsert.length === 0) {
+        alert('No valid books found in CSV');
+        setUploadResults({ success: 0, failed: rows.length, errors });
+        setUploading(false);
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from('books')
+        .insert(booksToInsert)
+        .select();
+
+      if (error) throw error;
+
+      setUploadResults({
+        success: data?.length || 0,
+        failed: errors.length,
+        errors,
+      });
+
+      fetchBooks();
+    } catch (error) {
+      console.error('Error uploading CSV:', error);
+      alert('Error uploading CSV file');
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    }
+  };
+
+  const downloadSampleCSV = () => {
+    const sample = `title,author,isbn,category,publisher,published_year,total_copies,available_copies
+The Great Gatsby,F. Scott Fitzgerald,978-0-7432-7356-5,Fiction,Scribner,1925,3,3
+To Kill a Mockingbird,Harper Lee,978-0-06-112008-4,Fiction,J.B. Lippincott & Co.,1960,2,2
+1984,George Orwell,978-0-452-28423-4,Fiction,Secker & Warburg,1949,5,5`;
+
+    const blob = new Blob([sample], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'books_sample.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   const filteredBooks = books.filter(book =>
     book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
     book.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -142,17 +255,26 @@ export default function Books() {
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-gray-900">Books Catalog</h2>
         {canEdit && (
-          <button
-            onClick={() => {
-              setEditingBook(null);
-              setFormData({ title: '', author: '', isbn: '', category: '', publisher: '', published_year: '', total_copies: '1', available_copies: '1' });
-              setShowModal(true);
-            }}
-            className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
-          >
-            <Plus className="w-4 h-4" />
-            <span>Add Book</span>
-          </button>
+          <div className="flex space-x-2">
+            <button
+              onClick={() => setShowUploadModal(true)}
+              className="flex items-center space-x-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition"
+            >
+              <Upload className="w-4 h-4" />
+              <span>Upload CSV</span>
+            </button>
+            <button
+              onClick={() => {
+                setEditingBook(null);
+                setFormData({ title: '', author: '', isbn: '', category: '', publisher: '', published_year: '', total_copies: '1', available_copies: '1' });
+                setShowModal(true);
+              }}
+              className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+            >
+              <Plus className="w-4 h-4" />
+              <span>Add Book</span>
+            </button>
+          </div>
         )}
       </div>
 
@@ -337,6 +459,88 @@ export default function Books() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {showUploadModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg max-w-2xl w-full p-6 max-h-[90vh] overflow-y-auto">
+            <h3 className="text-xl font-bold mb-4">Upload Books via CSV</h3>
+
+            <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <h4 className="font-semibold text-blue-900 mb-2">CSV Format Requirements:</h4>
+              <ul className="text-sm text-blue-800 space-y-1 list-disc list-inside">
+                <li><strong>Required fields:</strong> title, author</li>
+                <li><strong>Optional fields:</strong> isbn, category, publisher, published_year, total_copies, available_copies</li>
+                <li>First row must contain column headers</li>
+                <li>Use comma (,) as separator</li>
+              </ul>
+              <button
+                onClick={downloadSampleCSV}
+                className="mt-3 text-sm text-blue-600 hover:text-blue-800 underline"
+              >
+                Download Sample CSV
+              </button>
+            </div>
+
+            <div className="mb-6">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Select CSV File
+              </label>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".csv"
+                onChange={handleCSVUpload}
+                disabled={uploading}
+                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 disabled:opacity-50"
+              />
+            </div>
+
+            {uploading && (
+              <div className="mb-4 p-4 bg-gray-50 rounded-lg text-center">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-2"></div>
+                <p className="text-sm text-gray-600">Uploading books...</p>
+              </div>
+            )}
+
+            {uploadResults && (
+              <div className="mb-4 p-4 bg-gray-50 rounded-lg">
+                <h4 className="font-semibold text-gray-900 mb-2">Upload Results:</h4>
+                <div className="space-y-1 text-sm">
+                  <p className="text-green-600">Successfully added: {uploadResults.success} books</p>
+                  {uploadResults.failed > 0 && (
+                    <p className="text-red-600">Failed: {uploadResults.failed} rows</p>
+                  )}
+                </div>
+                {uploadResults.errors.length > 0 && (
+                  <div className="mt-3">
+                    <p className="text-sm font-medium text-gray-700 mb-1">Errors:</p>
+                    <div className="max-h-32 overflow-y-auto">
+                      {uploadResults.errors.map((error, index) => (
+                        <p key={index} className="text-xs text-red-600">{error}</p>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            <div className="flex space-x-3">
+              <button
+                onClick={() => {
+                  setShowUploadModal(false);
+                  setUploadResults(null);
+                  if (fileInputRef.current) {
+                    fileInputRef.current.value = '';
+                  }
+                }}
+                className="flex-1 bg-gray-200 text-gray-700 py-2 rounded-lg hover:bg-gray-300 transition"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       )}
