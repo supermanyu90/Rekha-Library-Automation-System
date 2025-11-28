@@ -10,9 +10,19 @@ interface StaffMember {
   email: string;
 }
 
+interface Member {
+  id: number;
+  name: string;
+  email: string;
+  membership_type: 'student' | 'faculty' | 'public';
+  phone: string | null;
+  address: string | null;
+}
+
 interface AuthContextType {
   user: User | null;
   staff: StaffMember | null;
+  member: Member | null;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
@@ -23,13 +33,14 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [staff, setStaff] = useState<StaffMember | null>(null);
+  const [member, setMember] = useState<Member | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
       if (session?.user) {
-        fetchStaffData(session.user.id);
+        fetchUserData(session.user.id);
       } else {
         setLoading(false);
       }
@@ -39,9 +50,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       (async () => {
         setUser(session?.user ?? null);
         if (session?.user) {
-          await fetchStaffData(session.user.id);
+          await fetchUserData(session.user.id);
         } else {
           setStaff(null);
+          setMember(null);
           setLoading(false);
         }
       })();
@@ -50,19 +62,34 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => subscription.unsubscribe();
   }, []);
 
-  const fetchStaffData = async (userId: string) => {
+  const fetchUserData = async (userId: string) => {
     try {
-      const { data, error } = await supabase
+      const { data: staffData, error: staffError } = await supabase
         .from('staff')
         .select('id, name, role, email')
         .eq('user_id', userId)
         .maybeSingle();
 
-      if (error) throw error;
-      setStaff(data);
+      if (staffError) throw staffError;
+
+      if (staffData) {
+        setStaff(staffData);
+        setMember(null);
+      } else {
+        const { data: memberData, error: memberError } = await supabase
+          .from('members')
+          .select('id, name, email, membership_type, phone, address')
+          .eq('user_id', userId)
+          .maybeSingle();
+
+        if (memberError) throw memberError;
+        setMember(memberData);
+        setStaff(null);
+      }
     } catch (error) {
-      console.error('Error fetching staff data:', error);
+      console.error('Error fetching user data:', error);
       setStaff(null);
+      setMember(null);
     } finally {
       setLoading(false);
     }
@@ -77,10 +104,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const { error } = await supabase.auth.signOut();
     if (error) throw error;
     setStaff(null);
+    setMember(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, staff, loading, signIn, signOut }}>
+    <AuthContext.Provider value={{ user, staff, member, loading, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );

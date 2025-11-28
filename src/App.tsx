@@ -12,12 +12,19 @@ import Overdue from './components/Overdue';
 import Staff from './components/Staff';
 import MemberOnboarding from './components/MemberOnboarding';
 import OnboardingApproval from './components/OnboardingApproval';
+import MemberLayout from './components/MemberLayout';
+import MemberBookCatalog from './components/MemberBookCatalog';
+import MemberReservations from './components/MemberReservations';
+import MemberReviews from './components/MemberReviews';
+import ReservationManagement from './components/ReservationManagement';
+import ReviewApproval from './components/ReviewApproval';
 
 type ViewMode = 'hero' | 'login' | 'onboarding' | 'app';
 
 function MainApp() {
-  const { user, staff, loading } = useAuth();
+  const { user, staff, member, loading } = useAuth();
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [memberTab, setMemberTab] = useState('catalog');
   const [viewMode, setViewMode] = useState<ViewMode>('hero');
 
   if (loading) {
@@ -31,7 +38,7 @@ function MainApp() {
     );
   }
 
-  if (!user || !staff) {
+  if (!user) {
     if (viewMode === 'hero') {
       return <Hero onGetStarted={() => setViewMode('login')} onJoinLibrary={() => setViewMode('onboarding')} />;
     }
@@ -41,18 +48,34 @@ function MainApp() {
     return <Login onBack={() => setViewMode('hero')} />;
   }
 
-  return (
-    <Layout activeTab={activeTab} onTabChange={setActiveTab}>
-      {activeTab === 'dashboard' && <Dashboard />}
-      {activeTab === 'onboarding' && <OnboardingApproval />}
-      {activeTab === 'members' && <Members />}
-      {activeTab === 'books' && <Books />}
-      {activeTab === 'borrow' && <BorrowReturn />}
-      {activeTab === 'fines' && <Fines />}
-      {activeTab === 'overdue' && <Overdue />}
-      {activeTab === 'staff' && <Staff />}
-    </Layout>
-  );
+  if (member) {
+    return (
+      <MemberLayout activeTab={memberTab} onTabChange={setMemberTab}>
+        {memberTab === 'catalog' && <MemberBookCatalog />}
+        {memberTab === 'reservations' && <MemberReservations />}
+        {memberTab === 'reviews' && <MemberReviews />}
+      </MemberLayout>
+    );
+  }
+
+  if (staff) {
+    return (
+      <Layout activeTab={activeTab} onTabChange={setActiveTab}>
+        {activeTab === 'dashboard' && <Dashboard />}
+        {activeTab === 'onboarding' && <OnboardingApproval />}
+        {activeTab === 'members' && <Members />}
+        {activeTab === 'books' && <Books />}
+        {activeTab === 'borrow' && <BorrowReturn />}
+        {activeTab === 'reservations' && <ReservationManagement />}
+        {activeTab === 'reviews' && <ReviewApproval />}
+        {activeTab === 'fines' && <Fines />}
+        {activeTab === 'overdue' && <Overdue />}
+        {activeTab === 'staff' && <Staff />}
+      </Layout>
+    );
+  }
+
+  return null;
 }
 
 export default function App() {
