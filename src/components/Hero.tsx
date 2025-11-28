@@ -111,7 +111,7 @@ export default function Hero({ onGetStarted }: HeroProps) {
                 isDarkMode ? 'text-gray-400' : 'text-gray-500'
               }`}>
                 <span className="text-[#C9A34E] text-lg">✓</span>
-                <span>Trusted by Schools, Colleges, and Public Libraries.</span>
+                <span>Exclusively for Risk Management.</span>
               </p>
             </div>
 
