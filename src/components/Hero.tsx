@@ -1,11 +1,12 @@
-import { BookOpen, BarChart3, Settings, Play, ArrowRight } from 'lucide-react';
+import { BookOpen, BarChart3, Settings, Play, ArrowRight, UserPlus } from 'lucide-react';
 import { useState } from 'react';
 
 interface HeroProps {
   onGetStarted: () => void;
+  onJoinLibrary: () => void;
 }
 
-export default function Hero({ onGetStarted }: HeroProps) {
+export default function Hero({ onGetStarted, onJoinLibrary }: HeroProps) {
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   const benefits = [
@@ -89,11 +90,12 @@ export default function Hero({ onGetStarted }: HeroProps) {
                     hover:bg-[#b8923d] transform hover:scale-105 transition-all duration-300
                     shadow-lg hover:shadow-xl flex items-center justify-center space-x-2"
                 >
-                  <span>Get Started</span>
+                  <span>Staff Login</span>
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </button>
 
                 <button
+                  onClick={onJoinLibrary}
                   className={`group px-8 py-4 rounded-xl font-semibold text-lg
                     border-2 transform hover:scale-105 transition-all duration-300
                     flex items-center justify-center space-x-2 ${
@@ -102,8 +104,8 @@ export default function Hero({ onGetStarted }: HeroProps) {
                         : 'border-[#0F1A33]/30 text-[#0F1A33] hover:bg-[#0F1A33]/5'
                     }`}
                 >
-                  <Play className="w-5 h-5" />
-                  <span>Watch Demo</span>
+                  <UserPlus className="w-5 h-5" />
+                  <span>Join Library</span>
                 </button>
               </div>
 

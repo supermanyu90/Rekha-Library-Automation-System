@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { BookOpen, LogOut, Users, BookMarked, ClipboardList, DollarSign, AlertCircle, BarChart3, User } from 'lucide-react';
+import { BookOpen, LogOut, Users, BookMarked, ClipboardList, DollarSign, AlertCircle, BarChart3, User, UserPlus } from 'lucide-react';
 
 interface LayoutProps {
   children: ReactNode;
@@ -12,13 +12,14 @@ export default function Layout({ children, activeTab, onTabChange }: LayoutProps
   const { staff, signOut } = useAuth();
 
   const tabs = [
-    { id: 'dashboard', label: 'Dashboard', icon: BarChart3, roles: ['admin', 'librarian', 'assistant'] },
-    { id: 'members', label: 'Members', icon: Users, roles: ['admin', 'librarian', 'assistant'] },
-    { id: 'books', label: 'Books', icon: BookMarked, roles: ['admin', 'librarian', 'assistant'] },
-    { id: 'borrow', label: 'Borrow/Return', icon: ClipboardList, roles: ['admin', 'librarian'] },
-    { id: 'fines', label: 'Fines', icon: DollarSign, roles: ['admin', 'librarian', 'assistant'] },
-    { id: 'overdue', label: 'Overdue', icon: AlertCircle, roles: ['admin', 'librarian', 'assistant'] },
-    { id: 'staff', label: 'Staff', icon: User, roles: ['admin'] },
+    { id: 'dashboard', label: 'Dashboard', icon: BarChart3, roles: ['superadmin', 'admin', 'librarian', 'assistant'] },
+    { id: 'onboarding', label: 'Applications', icon: UserPlus, roles: ['superadmin', 'admin', 'librarian'] },
+    { id: 'members', label: 'Members', icon: Users, roles: ['superadmin', 'admin', 'librarian', 'assistant'] },
+    { id: 'books', label: 'Books', icon: BookMarked, roles: ['superadmin', 'admin', 'librarian', 'assistant'] },
+    { id: 'borrow', label: 'Borrow/Return', icon: ClipboardList, roles: ['superadmin', 'admin', 'librarian'] },
+    { id: 'fines', label: 'Fines', icon: DollarSign, roles: ['superadmin', 'admin', 'librarian', 'assistant'] },
+    { id: 'overdue', label: 'Overdue', icon: AlertCircle, roles: ['superadmin', 'admin', 'librarian', 'assistant'] },
+    { id: 'staff', label: 'Staff', icon: User, roles: ['superadmin', 'admin'] },
   ];
 
   const availableTabs = tabs.filter(tab => staff && tab.roles.includes(staff.role));

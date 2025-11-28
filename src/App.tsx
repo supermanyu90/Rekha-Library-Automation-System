@@ -10,11 +10,15 @@ import BorrowReturn from './components/BorrowReturn';
 import Fines from './components/Fines';
 import Overdue from './components/Overdue';
 import Staff from './components/Staff';
+import MemberOnboarding from './components/MemberOnboarding';
+import OnboardingApproval from './components/OnboardingApproval';
+
+type ViewMode = 'hero' | 'login' | 'onboarding' | 'app';
 
 function MainApp() {
   const { user, staff, loading } = useAuth();
   const [activeTab, setActiveTab] = useState('dashboard');
-  const [showHero, setShowHero] = useState(true);
+  const [viewMode, setViewMode] = useState<ViewMode>('hero');
 
   if (loading) {
     return (
@@ -28,15 +32,19 @@ function MainApp() {
   }
 
   if (!user || !staff) {
-    if (showHero) {
-      return <Hero onGetStarted={() => setShowHero(false)} />;
+    if (viewMode === 'hero') {
+      return <Hero onGetStarted={() => setViewMode('login')} onJoinLibrary={() => setViewMode('onboarding')} />;
     }
-    return <Login />;
+    if (viewMode === 'onboarding') {
+      return <MemberOnboarding onBack={() => setViewMode('hero')} />;
+    }
+    return <Login onBack={() => setViewMode('hero')} />;
   }
 
   return (
     <Layout activeTab={activeTab} onTabChange={setActiveTab}>
       {activeTab === 'dashboard' && <Dashboard />}
+      {activeTab === 'onboarding' && <OnboardingApproval />}
       {activeTab === 'members' && <Members />}
       {activeTab === 'books' && <Books />}
       {activeTab === 'borrow' && <BorrowReturn />}

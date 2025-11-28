@@ -1,8 +1,12 @@
 import { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { BookOpen } from 'lucide-react';
+import { BookOpen, ArrowLeft } from 'lucide-react';
 
-export default function Login() {
+interface LoginProps {
+  onBack: () => void;
+}
+
+export default function Login({ onBack }: LoginProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -26,6 +30,14 @@ export default function Login() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-8">
+        <button
+          onClick={onBack}
+          className="inline-flex items-center space-x-2 text-gray-600 hover:text-gray-900 mb-6 transition"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          <span>Back</span>
+        </button>
+
         <div className="flex items-center justify-center mb-8">
           <div className="bg-blue-600 p-3 rounded-xl">
             <BookOpen className="w-8 h-8 text-white" />
@@ -33,10 +45,10 @@ export default function Login() {
         </div>
 
         <h1 className="text-3xl font-bold text-center text-gray-900 mb-2">
-          Library Management System
+          Staff Login
         </h1>
         <p className="text-center text-gray-600 mb-8">
-          Sign in to access the system
+          Sign in to access the staff portal
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-6">
