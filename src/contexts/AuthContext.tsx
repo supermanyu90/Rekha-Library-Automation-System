@@ -64,42 +64,65 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const fetchUserData = async (userId: string) => {
     try {
+      console.log('Fetching user data for userId:', userId);
+
       const { data: staffData, error: staffError } = await supabase
         .from('staff')
         .select('id, name, role, email')
         .eq('user_id', userId)
         .maybeSingle();
 
-      if (staffError) throw staffError;
+      console.log('Staff query result:', { staffData, staffError });
+
+      if (staffError) {
+        console.error('Staff query error:', staffError);
+        throw staffError;
+      }
 
       if (staffData) {
+        console.log('Setting staff data:', staffData);
         setStaff(staffData);
         setMember(null);
-      } else {
-        const { data: memberData, error: memberError } = await supabase
-          .from('members')
-          .select('id, full_name, email, membership_type, phone, status')
-          .eq('user_id', userId)
-          .maybeSingle();
+        setLoading(false);
+        return;
+      }
 
-        if (memberError) throw memberError;
+      console.log('No staff data found, checking for member data');
 
-        if (memberData) {
-          if (memberData.status !== 'active') {
-            await supabase.auth.signOut();
-            throw new Error('Your account is pending approval. Please wait for a librarian to approve your account.');
-          }
+      const { data: memberData, error: memberError } = await supabase
+        .from('members')
+        .select('id, full_name, email, membership_type, phone, status')
+        .eq('user_id', userId)
+        .maybeSingle();
 
-          setMember({
-            id: memberData.id,
-            name: memberData.full_name,
-            email: memberData.email,
-            membership_type: memberData.membership_type,
-            phone: memberData.phone,
-            address: null,
-          });
+      console.log('Member query result:', { memberData, memberError });
+
+      if (memberError) {
+        console.error('Member query error:', memberError);
+        throw memberError;
+      }
+
+      if (memberData) {
+        if (memberData.status !== 'active') {
+          console.log('Member status not active:', memberData.status);
+          await supabase.auth.signOut();
+          throw new Error('Your account is pending approval. Please wait for a librarian to approve your account.');
         }
+
+        console.log('Setting member data:', memberData);
+        setMember({
+          id: memberData.id,
+          name: memberData.full_name,
+          email: memberData.email,
+          membership_type: memberData.membership_type,
+          phone: memberData.phone,
+          address: null,
+        });
         setStaff(null);
+      } else {
+        console.log('No member data found either');
+        setStaff(null);
+        setMember(null);
       }
     } catch (error) {
       console.error('Error fetching user data:', error);
