@@ -105,7 +105,7 @@ export default function Login({ onBack }: LoginProps) {
 
         <div className="mt-8 pt-6 border-t border-gray-200">
           <p className="text-sm text-gray-600 text-center">
-            Demo credentials available in database
+            Created by Abhimanyu Mathur.
           </p>
         </div>
       </div>
