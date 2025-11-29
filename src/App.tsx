@@ -11,7 +11,9 @@ import Fines from './components/Fines';
 import Overdue from './components/Overdue';
 import Staff from './components/Staff';
 import MemberOnboarding from './components/MemberOnboarding';
+import MemberSignup from './components/MemberSignup';
 import OnboardingApproval from './components/OnboardingApproval';
+import MemberApproval from './components/MemberApproval';
 import MemberLayout from './components/MemberLayout';
 import MemberBookCatalog from './components/MemberBookCatalog';
 import MemberReservations from './components/MemberReservations';
@@ -19,7 +21,7 @@ import MemberReviews from './components/MemberReviews';
 import ReservationManagement from './components/ReservationManagement';
 import ReviewApproval from './components/ReviewApproval';
 
-type ViewMode = 'hero' | 'login' | 'onboarding' | 'app';
+type ViewMode = 'hero' | 'login' | 'onboarding' | 'signup' | 'app';
 
 function MainApp() {
   const { user, staff, member, loading } = useAuth();
@@ -40,10 +42,19 @@ function MainApp() {
 
   if (!user) {
     if (viewMode === 'hero') {
-      return <Hero onGetStarted={() => setViewMode('login')} onJoinLibrary={() => setViewMode('onboarding')} />;
+      return (
+        <Hero
+          onGetStarted={() => setViewMode('login')}
+          onJoinLibrary={() => setViewMode('login')}
+          onMemberSignup={() => setViewMode('signup')}
+        />
+      );
     }
     if (viewMode === 'onboarding') {
       return <MemberOnboarding onBack={() => setViewMode('hero')} />;
+    }
+    if (viewMode === 'signup') {
+      return <MemberSignup onBack={() => setViewMode('hero')} />;
     }
     return <Login onBack={() => setViewMode('hero')} />;
   }
@@ -63,6 +74,7 @@ function MainApp() {
       <Layout activeTab={activeTab} onTabChange={setActiveTab}>
         {activeTab === 'dashboard' && <Dashboard />}
         {activeTab === 'onboarding' && <OnboardingApproval />}
+        {activeTab === 'approval' && <MemberApproval />}
         {activeTab === 'members' && <Members />}
         {activeTab === 'books' && <Books />}
         {activeTab === 'borrow' && <BorrowReturn />}

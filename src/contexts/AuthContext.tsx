@@ -78,18 +78,34 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       } else {
         const { data: memberData, error: memberError } = await supabase
           .from('members')
-          .select('id, name, email, membership_type, phone, address')
+          .select('id, full_name, email, membership_type, phone, status')
           .eq('user_id', userId)
           .maybeSingle();
 
         if (memberError) throw memberError;
-        setMember(memberData);
+
+        if (memberData) {
+          if (memberData.status !== 'active') {
+            await supabase.auth.signOut();
+            throw new Error('Your account is pending approval. Please wait for a librarian to approve your account.');
+          }
+
+          setMember({
+            id: memberData.id,
+            name: memberData.full_name,
+            email: memberData.email,
+            membership_type: memberData.membership_type,
+            phone: memberData.phone,
+            address: null,
+          });
+        }
         setStaff(null);
       }
     } catch (error) {
       console.error('Error fetching user data:', error);
       setStaff(null);
       setMember(null);
+      throw error;
     } finally {
       setLoading(false);
     }

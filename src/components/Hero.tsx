@@ -4,9 +4,10 @@ import { useState } from 'react';
 interface HeroProps {
   onGetStarted: () => void;
   onJoinLibrary: () => void;
+  onMemberSignup: () => void;
 }
 
-export default function Hero({ onGetStarted, onJoinLibrary }: HeroProps) {
+export default function Hero({ onGetStarted, onJoinLibrary, onMemberSignup }: HeroProps) {
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   const benefits = [
@@ -95,7 +96,7 @@ export default function Hero({ onGetStarted, onJoinLibrary }: HeroProps) {
                 </button>
 
                 <button
-                  onClick={onJoinLibrary}
+                  onClick={onMemberSignup}
                   className={`group px-8 py-4 rounded-xl font-semibold text-lg
                     border-2 transform hover:scale-105 transition-all duration-300
                     flex items-center justify-center space-x-2 ${
@@ -105,9 +106,21 @@ export default function Hero({ onGetStarted, onJoinLibrary }: HeroProps) {
                     }`}
                 >
                   <UserPlus className="w-5 h-5" />
-                  <span>Join Library</span>
+                  <span>Member Sign Up</span>
                 </button>
               </div>
+
+              <p className={`text-sm ${
+                isDarkMode ? 'text-gray-400' : 'text-gray-500'
+              }`}>
+                Already a member?{' '}
+                <button
+                  onClick={onJoinLibrary}
+                  className="text-[#C9A34E] hover:underline font-medium"
+                >
+                  Log in here
+                </button>
+              </p>
 
               <p className={`text-sm flex items-center space-x-2 ${
                 isDarkMode ? 'text-gray-400' : 'text-gray-500'
