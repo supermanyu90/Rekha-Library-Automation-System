@@ -29,15 +29,27 @@ export default function Staff() {
 
   const fetchStaff = async () => {
     try {
-      const { data, error } = await supabase
-        .from('staff')
-        .select('*')
-        .order('name', { ascending: true });
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) throw new Error('Not authenticated');
 
-      if (error) throw error;
+      const apiUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/manage-staff`;
+      const response = await fetch(apiUrl, {
+        headers: {
+          'Authorization': `Bearer ${session.access_token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to fetch staff');
+      }
+
+      const data = await response.json();
       setStaff(data || []);
     } catch (error) {
       console.error('Error fetching staff:', error);
+      alert('Error loading staff. Please ensure you have admin permissions.');
     } finally {
       setLoading(false);
     }
@@ -47,19 +59,27 @@ export default function Staff() {
     e.preventDefault();
 
     try {
-      if (editingStaff) {
-        const { error } = await supabase
-          .from('staff')
-          .update(formData)
-          .eq('id', editingStaff.id);
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) throw new Error('Not authenticated');
 
-        if (error) throw error;
-      } else {
-        const { error } = await supabase
-          .from('staff')
-          .insert([formData]);
+      const apiUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/manage-staff`;
+      const method = editingStaff ? 'PUT' : 'POST';
+      const body = editingStaff
+        ? { id: editingStaff.id, ...formData }
+        : formData;
 
-        if (error) throw error;
+      const response = await fetch(apiUrl, {
+        method,
+        headers: {
+          'Authorization': `Bearer ${session.access_token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to save staff');
       }
 
       setShowModal(false);
@@ -68,7 +88,7 @@ export default function Staff() {
       fetchStaff();
     } catch (error) {
       console.error('Error saving staff:', error);
-      alert('Error saving staff member');
+      alert('Error saving staff member: ' + (error as Error).message);
     }
   };
 
@@ -86,16 +106,28 @@ export default function Staff() {
     if (!confirm('Are you sure you want to delete this staff member?')) return;
 
     try {
-      const { error } = await supabase
-        .from('staff')
-        .delete()
-        .eq('id', id);
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) throw new Error('Not authenticated');
 
-      if (error) throw error;
+      const apiUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/manage-staff`;
+      const response = await fetch(apiUrl, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${session.access_token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to delete staff');
+      }
+
       fetchStaff();
     } catch (error) {
       console.error('Error deleting staff:', error);
-      alert('Error deleting staff member');
+      alert('Error deleting staff member: ' + (error as Error).message);
     }
   };
 
