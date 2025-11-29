@@ -25,17 +25,36 @@ export default function MemberOnboarding({ onBack }: MemberOnboardingProps) {
     setError('');
 
     try {
-      const { error: submitError } = await supabase
-        .from('onboarding_forms')
-        .insert([formData]);
+      const dataToInsert = {
+        full_name: formData.full_name,
+        email: formData.email,
+        phone: formData.phone || null,
+        address: formData.address || null,
+        membership_type: formData.membership_type,
+        reason: formData.reason || null,
+      };
 
-      if (submitError) throw submitError;
+      console.log('Submitting form data:', dataToInsert);
+
+      const { data, error: submitError } = await supabase
+        .from('onboarding_forms')
+        .insert([dataToInsert])
+        .select();
+
+      console.log('Supabase response:', { data, error: submitError });
+
+      if (submitError) {
+        console.error('Supabase error details:', submitError);
+        throw submitError;
+      }
 
       setSubmitted(true);
     } catch (err: any) {
       console.error('Error submitting form:', err);
       if (err.code === '23505') {
         setError('This email has already been used. Please use a different email or contact support.');
+      } else if (err.message) {
+        setError(`Failed to submit form: ${err.message}`);
       } else {
         setError('Failed to submit form. Please try again.');
       }
