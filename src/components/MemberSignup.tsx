@@ -73,6 +73,10 @@ export default function MemberSignup({ onBack }: MemberSignupProps) {
         throw memberError;
       }
 
+      // Sign out the user immediately after creating their account
+      // This prevents the AuthContext from checking their pending status
+      await supabase.auth.signOut();
+
       setSubmitted(true);
     } catch (err: any) {
       console.error('Error during sign-up:', err);

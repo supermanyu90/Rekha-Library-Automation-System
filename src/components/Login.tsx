@@ -21,7 +21,13 @@ export default function Login({ onBack }: LoginProps) {
     try {
       await signIn(email, password);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to sign in');
+      const errorMessage = err instanceof Error ? err.message : 'Failed to sign in';
+      // Check if it's a pending approval error
+      if (errorMessage.includes('pending approval')) {
+        setError('Your membership account is awaiting approval. Please contact the library or wait for a librarian to approve your account before logging in.');
+      } else {
+        setError(errorMessage);
+      }
     } finally {
       setLoading(false);
     }
