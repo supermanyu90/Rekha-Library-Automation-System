@@ -34,7 +34,7 @@ export default function MemberOnboarding({ onBack }: MemberOnboardingProps) {
         reason: formData.reason || null,
       };
 
-      const { data, error: submitError } = await supabase
+      const { error: submitError } = await supabase
         .from('onboarding_forms')
         .insert([dataToInsert])
         .select();

@@ -1,4 +1,4 @@
-import { BookOpen, BarChart3, Settings, Play, ArrowRight, UserPlus } from 'lucide-react';
+import { BookOpen, BarChart3, Settings, ArrowRight, UserPlus } from 'lucide-react';
 import { useState } from 'react';
 
 interface HeroProps {
