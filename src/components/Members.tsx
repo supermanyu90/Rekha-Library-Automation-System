@@ -25,7 +25,7 @@ export default function Members() {
     email: '',
     phone: '',
     membership_type: 'student',
-    status: 'active',
+    status: 'pending',
   });
 
   const canEdit = staff?.role === 'superadmin' || staff?.role === 'admin' || staff?.role === 'librarian';
@@ -71,7 +71,7 @@ export default function Members() {
 
       setShowModal(false);
       setEditingMember(null);
-      setFormData({ full_name: '', email: '', phone: '', membership_type: 'student', status: 'active' });
+      setFormData({ full_name: '', email: '', phone: '', membership_type: 'student', status: 'pending' });
       fetchMembers();
     } catch (error) {
       console.error('Error saving member:', error);
@@ -125,7 +125,7 @@ export default function Members() {
           <button
             onClick={() => {
               setEditingMember(null);
-              setFormData({ full_name: '', email: '', phone: '', membership_type: 'student', status: 'active' });
+              setFormData({ full_name: '', email: '', phone: '', membership_type: 'student', status: 'pending' });
               setShowModal(true);
             }}
             className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
