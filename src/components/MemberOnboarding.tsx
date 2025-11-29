@@ -32,6 +32,7 @@ export default function MemberOnboarding({ onBack }: MemberOnboardingProps) {
         address: formData.address || null,
         membership_type: formData.membership_type,
         reason: formData.reason || null,
+        status: 'pending' as const,
       };
 
       console.log('Submitting form data:', dataToInsert);
