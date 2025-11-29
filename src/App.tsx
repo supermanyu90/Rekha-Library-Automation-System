@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { supabase } from './lib/supabase';
 import Hero from './components/Hero';
 import Login from './components/Login';
 import Layout from './components/Layout';
@@ -98,7 +99,26 @@ function MainApp() {
     );
   }
 
-  return null;
+  return (
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="text-center max-w-md p-8">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">Account Pending Approval</h2>
+        <p className="text-gray-600 mb-6">
+          Your membership application is currently being reviewed by our staff.
+          You will receive access once your account has been approved.
+        </p>
+        <button
+          onClick={async () => {
+            await supabase.auth.signOut();
+            setViewMode('hero');
+          }}
+          className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+        >
+          Sign Out
+        </button>
+      </div>
+    </div>
+  );
 }
 
 export default function App() {
