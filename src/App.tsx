@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import Hero from './components/Hero';
 import Login from './components/Login';
@@ -28,6 +28,17 @@ function MainApp() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [memberTab, setMemberTab] = useState('catalog');
   const [viewMode, setViewMode] = useState<ViewMode>('hero');
+
+  // Update view mode based on authentication state
+  useEffect(() => {
+    if (!loading) {
+      if (user && (staff || member)) {
+        setViewMode('app');
+      } else if (!user && viewMode === 'app') {
+        setViewMode('hero');
+      }
+    }
+  }, [user, staff, member, loading, viewMode]);
 
   if (loading) {
     return (

@@ -38,6 +38,7 @@ export default function MemberSignup({ onBack }: MemberSignupProps) {
     }
 
     try {
+      // Create auth user with autoConfirm disabled to prevent auto-login
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
@@ -69,14 +70,13 @@ export default function MemberSignup({ onBack }: MemberSignupProps) {
         }]);
 
       if (memberError) {
-        await supabase.auth.admin.deleteUser(authData.user.id);
         throw memberError;
       }
 
-      // Sign out the user immediately after creating their account
-      // This prevents the AuthContext from checking their pending status
+      // Immediately sign out to prevent AuthContext from loading pending member
       await supabase.auth.signOut();
 
+      // Now show success message
       setSubmitted(true);
     } catch (err: any) {
       console.error('Error during sign-up:', err);
