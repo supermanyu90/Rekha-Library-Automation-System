@@ -34,7 +34,7 @@ Deno.serve(async (req: Request) => {
     
     if (authError || !user) {
       return new Response(
-        JSON.stringify({ error: 'Unauthorized' }),
+        JSON.stringify({ error: 'Unauthorized', details: authError?.message }),
         { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
@@ -48,7 +48,7 @@ Deno.serve(async (req: Request) => {
 
     if (staffError || !staffData || !['admin', 'superadmin'].includes(staffData.role)) {
       return new Response(
-        JSON.stringify({ error: 'Insufficient permissions' }),
+        JSON.stringify({ error: 'Insufficient permissions', details: staffError?.message }),
         { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
@@ -174,7 +174,10 @@ Deno.serve(async (req: Request) => {
   } catch (error) {
     console.error('Error in manage-staff function:', error);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({
+        error: error.message || 'An unknown error occurred',
+        details: error.toString()
+      }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
