@@ -65,10 +65,10 @@ export default function Books() {
     const bookData = {
       title: formData.title,
       author: formData.author,
-      isbn: formData.isbn || null,
-      category: formData.category || null,
-      publisher: formData.publisher || null,
-      published_year: formData.published_year ? parseInt(formData.published_year) : null,
+      isbn: formData.isbn || '',
+      genre: formData.category || '',
+      publisher: formData.publisher || '',
+      year: formData.published_year ? parseInt(formData.published_year) : new Date().getFullYear(),
       total_copies: parseInt(formData.total_copies),
       available_copies: parseInt(formData.available_copies),
     };

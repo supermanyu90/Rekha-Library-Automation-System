@@ -272,4 +272,4 @@ export type Database = {
   }
 }
 
-export type StaffRole = 'superadmin' | 'librarian' | 'assistant'
+export type StaffRole = 'superadmin' | 'admin' | 'librarian' | 'assistant'
