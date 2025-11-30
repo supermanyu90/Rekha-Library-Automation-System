@@ -13,7 +13,7 @@ interface Review {
   reviewed_at: string | null;
   review_notes: string | null;
   member: {
-    name: string;
+    full_name: string;
     email: string;
   };
   book: {
@@ -51,7 +51,7 @@ export default function ReviewApproval() {
           reviewed_by,
           reviewed_at,
           review_notes,
-          member:members(name, email),
+          member:members(full_name, email),
           book:books(title, author)
         `)
         .order('created_at', { ascending: false });
@@ -210,7 +210,7 @@ export default function ReviewApproval() {
                   </div>
                   <div className="text-sm text-gray-600 space-y-2">
                     <p><strong>Author:</strong> {review.book.author}</p>
-                    <p><strong>Reviewer:</strong> {review.member.name} ({review.member.email})</p>
+                    <p><strong>Reviewer:</strong> {review.member.full_name} ({review.member.email})</p>
                     <div className="flex items-center space-x-1">
                       <strong>Rating:</strong>
                       <div className="flex items-center ml-2">
@@ -266,7 +266,7 @@ export default function ReviewApproval() {
               </div>
               <div>
                 <p className="text-sm font-medium text-gray-700">Reviewer</p>
-                <p className="text-gray-900">{selectedReview.member.name}</p>
+                <p className="text-gray-900">{selectedReview.member.full_name}</p>
                 <p className="text-sm text-gray-600">{selectedReview.member.email}</p>
               </div>
               <div>
