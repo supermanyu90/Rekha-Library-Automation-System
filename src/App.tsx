@@ -21,6 +21,7 @@ import MemberReservations from './components/MemberReservations';
 import MemberReviews from './components/MemberReviews';
 import ReservationManagement from './components/ReservationManagement';
 import ReviewApproval from './components/ReviewApproval';
+import Analytics from './components/Analytics';
 
 type ViewMode = 'hero' | 'login' | 'onboarding' | 'signup' | 'app';
 
@@ -85,6 +86,7 @@ function MainApp() {
     return (
       <Layout activeTab={activeTab} onTabChange={setActiveTab}>
         {activeTab === 'dashboard' && <Dashboard />}
+        {activeTab === 'analytics' && <Analytics />}
         {activeTab === 'onboarding' && <OnboardingApproval />}
         {activeTab === 'approval' && <MemberApproval />}
         {activeTab === 'members' && <Members />}

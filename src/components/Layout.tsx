@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { BookOpen, LogOut, Users, BookMarked, ClipboardList, DollarSign, AlertCircle, BarChart3, User, UserPlus, Clock, Star, UserCheck } from 'lucide-react';
+import { BookOpen, LogOut, Users, BookMarked, ClipboardList, DollarSign, AlertCircle, BarChart3, User, UserPlus, Clock, Star, UserCheck, TrendingUp } from 'lucide-react';
 
 interface LayoutProps {
   children: ReactNode;
@@ -13,6 +13,7 @@ export default function Layout({ children, activeTab, onTabChange }: LayoutProps
 
   const tabs = [
     { id: 'dashboard', label: 'Dashboard', icon: BarChart3, roles: ['superadmin', 'admin', 'librarian', 'assistant'] },
+    { id: 'analytics', label: 'Analytics', icon: TrendingUp, roles: ['superadmin', 'admin', 'librarian'] },
     { id: 'approval', label: 'Member Approval', icon: UserCheck, roles: ['superadmin', 'admin', 'librarian'] },
     { id: 'onboarding', label: 'Applications', icon: UserPlus, roles: ['superadmin', 'admin', 'librarian'] },
     { id: 'members', label: 'Members', icon: Users, roles: ['superadmin', 'admin', 'librarian', 'assistant'] },
