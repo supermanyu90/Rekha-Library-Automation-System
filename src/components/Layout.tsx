@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { BookOpen, LogOut, Users, BookMarked, ClipboardList, DollarSign, AlertCircle, BarChart3, User, UserPlus, Clock, Star, UserCheck, TrendingUp } from 'lucide-react';
+import { BookOpen, LogOut, Users, BookMarked, ClipboardList, DollarSign, AlertCircle, BarChart3, User, UserPlus, Clock, Star, UserCheck, TrendingUp, BookPlus, BookCheck } from 'lucide-react';
 
 interface LayoutProps {
   children: ReactNode;
@@ -18,6 +18,8 @@ export default function Layout({ children, activeTab, onTabChange }: LayoutProps
     { id: 'onboarding', label: 'Applications', icon: UserPlus, roles: ['superadmin', 'admin', 'librarian'] },
     { id: 'members', label: 'Members', icon: Users, roles: ['superadmin', 'admin', 'librarian', 'assistant'] },
     { id: 'books', label: 'Books', icon: BookMarked, roles: ['superadmin', 'admin', 'librarian', 'assistant'] },
+    { id: 'book-requests', label: 'Book Requests', icon: BookPlus, roles: ['superadmin', 'admin', 'librarian'] },
+    { id: 'issue-requests', label: 'Issue Requests', icon: BookCheck, roles: ['superadmin', 'admin', 'librarian'] },
     { id: 'borrow', label: 'Borrow/Return', icon: ClipboardList, roles: ['superadmin', 'admin', 'librarian'] },
     { id: 'reservations', label: 'Reservations', icon: Clock, roles: ['superadmin', 'admin', 'librarian'] },
     { id: 'reviews', label: 'Reviews', icon: Star, roles: ['superadmin', 'admin', 'librarian'] },

@@ -24,6 +24,8 @@ import MemberIssueRequests from './components/MemberIssueRequests';
 import ReservationManagement from './components/ReservationManagement';
 import ReviewApproval from './components/ReviewApproval';
 import Analytics from './components/Analytics';
+import BookRequestApproval from './components/BookRequestApproval';
+import IssueRequestApproval from './components/IssueRequestApproval';
 
 type ViewMode = 'hero' | 'login' | 'onboarding' | 'signup' | 'app';
 
@@ -95,6 +97,8 @@ function MainApp() {
         {activeTab === 'approval' && <MemberApproval />}
         {activeTab === 'members' && <Members />}
         {activeTab === 'books' && <Books />}
+        {activeTab === 'book-requests' && <BookRequestApproval />}
+        {activeTab === 'issue-requests' && <IssueRequestApproval />}
         {activeTab === 'borrow' && <BorrowReturn />}
         {activeTab === 'reservations' && <ReservationManagement />}
         {activeTab === 'reviews' && <ReviewApproval />}
