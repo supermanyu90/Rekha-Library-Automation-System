@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
-import { Search, BookOpen, Star, Clock } from 'lucide-react';
+import { Search, BookOpen, Star, Clock, BookCheck } from 'lucide-react';
 
 interface Book {
   id: number;
@@ -35,6 +35,7 @@ export default function MemberBookCatalog() {
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [bookReviews, setBookReviews] = useState<BookReview[]>([]);
   const [reserving, setReserving] = useState(false);
+  const [requesting, setRequesting] = useState(false);
 
   useEffect(() => {
     fetchBooks();
@@ -120,6 +121,29 @@ export default function MemberBookCatalog() {
       alert('Failed to reserve book: ' + (error.message || 'Unknown error'));
     } finally {
       setReserving(false);
+    }
+  };
+
+  const handleIssueRequest = async (bookId: number) => {
+    if (!member) return;
+
+    setRequesting(true);
+    try {
+      const { error } = await supabase
+        .from('issue_requests')
+        .insert({
+          member_id: member.id,
+          book_id: bookId,
+        });
+
+      if (error) throw error;
+      alert('Issue request submitted successfully! Staff will review and process your request.');
+      setShowDetailsModal(false);
+    } catch (error: any) {
+      console.error('Error submitting issue request:', error);
+      alert('Failed to submit issue request: ' + (error.message || 'Unknown error'));
+    } finally {
+      setRequesting(false);
     }
   };
 
@@ -227,21 +251,37 @@ export default function MemberBookCatalog() {
               <p><strong>Available Copies:</strong> <span className={selectedBook.available_copies > 0 ? 'text-green-600' : 'text-red-600'}>{selectedBook.available_copies}</span> / {selectedBook.total_copies}</p>
             </div>
 
-            {selectedBook.available_copies === 0 && (
-              <div className="mb-4">
-                <button
-                  onClick={() => handleReserve(selectedBook.id)}
-                  disabled={reserving}
-                  className="w-full flex items-center justify-center space-x-2 bg-[#C9A34E] text-white py-3 rounded-lg hover:bg-[#b8923d] transition disabled:opacity-50"
-                >
-                  <Clock className="w-4 h-4" />
-                  <span>{reserving ? 'Reserving...' : 'Reserve This Book'}</span>
-                </button>
-                <p className="text-xs text-gray-500 text-center mt-2">
-                  You'll be notified when this book becomes available
-                </p>
-              </div>
-            )}
+            <div className="mb-4 space-y-3">
+              {selectedBook.available_copies > 0 ? (
+                <div>
+                  <button
+                    onClick={() => handleIssueRequest(selectedBook.id)}
+                    disabled={requesting}
+                    className="w-full flex items-center justify-center space-x-2 bg-[#C9A34E] text-white py-3 rounded-lg hover:bg-[#b8923d] transition disabled:opacity-50"
+                  >
+                    <BookCheck className="w-4 h-4" />
+                    <span>{requesting ? 'Requesting...' : 'Request to Issue This Book'}</span>
+                  </button>
+                  <p className="text-xs text-gray-500 text-center mt-2">
+                    Submit a request to have this book issued to you. Staff will review and approve.
+                  </p>
+                </div>
+              ) : (
+                <div>
+                  <button
+                    onClick={() => handleReserve(selectedBook.id)}
+                    disabled={reserving}
+                    className="w-full flex items-center justify-center space-x-2 bg-[#C9A34E] text-white py-3 rounded-lg hover:bg-[#b8923d] transition disabled:opacity-50"
+                  >
+                    <Clock className="w-4 h-4" />
+                    <span>{reserving ? 'Reserving...' : 'Reserve This Book'}</span>
+                  </button>
+                  <p className="text-xs text-gray-500 text-center mt-2">
+                    Reserve this book and you'll be notified when it becomes available.
+                  </p>
+                </div>
+              )}
+            </div>
 
             <div className="border-t border-gray-200 pt-4">
               <h4 className="font-semibold text-gray-900 mb-3 flex items-center space-x-2">

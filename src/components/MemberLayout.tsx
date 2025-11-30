@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { BookOpen, LogOut, BookMarked, Clock, Star, BookPlus } from 'lucide-react';
+import { BookOpen, LogOut, BookMarked, Clock, Star, BookPlus, BookCheck } from 'lucide-react';
 
 interface MemberLayoutProps {
   children: ReactNode;
@@ -13,6 +13,7 @@ export default function MemberLayout({ children, activeTab, onTabChange }: Membe
 
   const tabs = [
     { id: 'catalog', label: 'Browse Books', icon: BookMarked },
+    { id: 'issue-requests', label: 'Issue Requests', icon: BookCheck },
     { id: 'reservations', label: 'My Reservations', icon: Clock },
     { id: 'reviews', label: 'My Reviews', icon: Star },
     { id: 'requests', label: 'Book Requests', icon: BookPlus },

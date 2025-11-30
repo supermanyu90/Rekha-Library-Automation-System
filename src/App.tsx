@@ -20,6 +20,7 @@ import MemberBookCatalog from './components/MemberBookCatalog';
 import MemberReservations from './components/MemberReservations';
 import MemberReviews from './components/MemberReviews';
 import MemberBookRequests from './components/MemberBookRequests';
+import MemberIssueRequests from './components/MemberIssueRequests';
 import ReservationManagement from './components/ReservationManagement';
 import ReviewApproval from './components/ReviewApproval';
 import Analytics from './components/Analytics';
@@ -77,6 +78,7 @@ function MainApp() {
     return (
       <MemberLayout activeTab={memberTab} onTabChange={setMemberTab}>
         {memberTab === 'catalog' && <MemberBookCatalog />}
+        {memberTab === 'issue-requests' && <MemberIssueRequests />}
         {memberTab === 'reservations' && <MemberReservations />}
         {memberTab === 'reviews' && <MemberReviews />}
         {memberTab === 'requests' && <MemberBookRequests />}
