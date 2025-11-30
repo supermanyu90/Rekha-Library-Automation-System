@@ -137,7 +137,7 @@ export default function IssueRequestApproval() {
   const handleFulfill = async (requestId: number) => {
     if (!staff) return;
 
-    const confirmFulfill = confirm('Mark this request as fulfilled? This means the book has been issued to the member.');
+    const confirmFulfill = confirm('Mark this request as fulfilled? This will issue the book to the member and update the available copy count.');
     if (!confirmFulfill) return;
 
     setProcessing(true);
@@ -149,12 +149,20 @@ export default function IssueRequestApproval() {
         })
         .eq('id', requestId);
 
-      if (error) throw error;
+      if (error) {
+        if (error.message.includes('No available copies')) {
+          alert('Cannot fulfill request: No available copies of this book. Please check the inventory.');
+        } else {
+          throw error;
+        }
+        return;
+      }
 
+      alert('Request fulfilled successfully! Book has been issued and inventory updated.');
       fetchRequests();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fulfilling request:', error);
-      alert('Failed to fulfill request');
+      alert('Failed to fulfill request: ' + (error.message || 'Unknown error'));
     } finally {
       setProcessing(false);
     }
