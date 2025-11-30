@@ -9,9 +9,9 @@ interface BorrowRecord {
   due_date: string;
   return_date: string | null;
   status: string;
-  members: { full_name: string; email: string };
-  books: { title: string; author: string };
-  staff: { name: string };
+  members: { full_name: string; email: string } | null;
+  books: { title: string; author: string } | null;
+  staff: { name: string } | null;
 }
 
 export default function BorrowReturn() {
@@ -147,8 +147,8 @@ export default function BorrowReturn() {
   };
 
   const filteredRecords = records.filter(record =>
-    record.members.full_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    record.books.title.toLowerCase().includes(searchTerm.toLowerCase())
+    record.members?.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    record.books?.title?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   if (loading) {
@@ -202,17 +202,17 @@ export default function BorrowReturn() {
               <tr key={record.id} className="hover:bg-gray-50">
                 <td className="px-4 py-3 text-sm">
                   <div>
-                    <div className="font-medium text-gray-900">{record.members.full_name}</div>
-                    <div className="text-xs text-gray-500">{record.members.email}</div>
+                    <div className="font-medium text-gray-900">{record.members?.full_name || 'Unknown'}</div>
+                    <div className="text-xs text-gray-500">{record.members?.email || 'N/A'}</div>
                   </div>
                 </td>
                 <td className="px-4 py-3 text-sm">
                   <div>
-                    <div className="font-medium text-gray-900">{record.books.title}</div>
-                    <div className="text-xs text-gray-500">{record.books.author}</div>
+                    <div className="font-medium text-gray-900">{record.books?.title || 'Unknown'}</div>
+                    <div className="text-xs text-gray-500">{record.books?.author || 'N/A'}</div>
                   </div>
                 </td>
-                <td className="px-4 py-3 text-sm text-gray-600">{record.staff.name}</td>
+                <td className="px-4 py-3 text-sm text-gray-600">{record.staff?.name || 'Unknown'}</td>
                 <td className="px-4 py-3 text-sm text-gray-600">
                   {new Date(record.issue_date).toLocaleDateString()}
                 </td>
