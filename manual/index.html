@@ -388,8 +388,8 @@
           <button class="btn btn-primary" onclick="window.print()">
             🖨️ Print Page
           </button>
-          <button class="btn btn-secondary" onclick="alert('PDF download feature coming soon!')">
-            📥 Download PDF
+          <button class="btn btn-secondary" onclick="downloadManual()">
+            📥 Download HTML Manual
           </button>
         </div>
 
@@ -869,6 +869,31 @@
   </div>
 
   <script>
+    const SUPABASE_URL = 'https://syfgcqwwguzhhpdxjddc.supabase.co';
+
+    async function downloadManual() {
+      try {
+        const response = await fetch(`${SUPABASE_URL}/functions/v1/download-document?id=1`);
+
+        if (!response.ok) {
+          throw new Error('Failed to download manual');
+        }
+
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'rekha-library-manual.html';
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      } catch (error) {
+        console.error('Error downloading manual:', error);
+        alert('Failed to download manual. Please try again.');
+      }
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
       const tocLinks = document.querySelectorAll('.toc a');
 
