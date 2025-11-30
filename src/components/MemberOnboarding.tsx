@@ -151,7 +151,7 @@ export default function MemberOnboarding({ onBack }: MemberOnboardingProps) {
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#C9A34E] focus:border-transparent"
-                  placeholder="+1 (555) 123-4567"
+                  placeholder="91-9870000000"
                 />
               </div>
 
@@ -165,8 +165,8 @@ export default function MemberOnboarding({ onBack }: MemberOnboardingProps) {
                   onChange={(e) => setFormData({ ...formData, membership_type: e.target.value as any })}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#C9A34E] focus:border-transparent"
                 >
-                  <option value="student">Student</option>
-                  <option value="faculty">Faculty</option>
+                  <option value="RMD Staff">Staff</option>
+                  <option value="Other Staff">Other Staff</option>
                   <option value="public">Public</option>
                 </select>
               </div>
@@ -181,7 +181,7 @@ export default function MemberOnboarding({ onBack }: MemberOnboardingProps) {
                 onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                 rows={3}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#C9A34E] focus:border-transparent"
-                placeholder="123 Main St, City, State, ZIP"
+                placeholder="City, State, Pin"
               />
             </div>
 
