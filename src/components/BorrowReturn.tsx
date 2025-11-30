@@ -124,7 +124,7 @@ export default function BorrowReturn() {
   };
 
   const handleReturn = async (recordId: string) => {
-    if (!confirm('Are you sure you want to mark this book as returned?')) return;
+    if (!confirm('Are you sure you want to mark this book as returned? The book inventory will be updated automatically.')) return;
 
     try {
       const { error } = await supabase
@@ -139,10 +139,10 @@ export default function BorrowReturn() {
 
       fetchRecords();
       fetchBooks();
-      alert('Book returned successfully!');
-    } catch (error) {
+      alert('Book returned successfully! The available copy count has been updated.');
+    } catch (error: any) {
       console.error('Error returning book:', error);
-      alert('Error returning book');
+      alert('Error returning book: ' + (error.message || 'Unknown error'));
     }
   };
 
