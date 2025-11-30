@@ -1,4 +1,4 @@
-import { BookOpen, BarChart3, Settings, ArrowRight, UserPlus } from 'lucide-react';
+import { BookOpen, BarChart3, Settings, ArrowRight, UserPlus, BookMarked } from 'lucide-react';
 import { useState } from 'react';
 
 interface HeroProps {
@@ -109,6 +109,19 @@ export default function Hero({ onGetStarted, onJoinLibrary, onMemberSignup }: He
                   <span>Member Sign Up</span>
                 </button>
               </div>
+
+              <a
+                href="/manual/index.html"
+                className={`inline-flex items-center justify-center space-x-2 px-6 py-3 rounded-xl font-semibold
+                  transform hover:scale-105 transition-all duration-300 ${
+                    isDarkMode
+                      ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg hover:shadow-xl'
+                      : 'bg-gradient-to-r from-[#0F1A33] to-[#1a2847] text-white shadow-lg hover:shadow-xl'
+                  }`}
+              >
+                <BookMarked className="w-5 h-5" />
+                <span>How to Use This Library</span>
+              </a>
 
               <p className={`text-sm ${
                 isDarkMode ? 'text-gray-400' : 'text-gray-500'

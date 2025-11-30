@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rekha Library Manual - How to Use</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #0F1A33;
+      --accent: #C9A34E;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-300: #d1d5db;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --gray-900: #111827;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+      min-height: 100vh;
+      line-height: 1.6;
+      color: var(--gray-800);
+    }
+
+    .container {
+      display: flex;
+      max-width: 1400px;
+      margin: 0 auto;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 0;
+      width: 280px;
+      height: 100vh;
+      background: white;
+      padding: 2rem 1.5rem;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+      overflow-y: auto;
+      z-index: 10;
+    }
+
+    .sidebar-header {
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--gray-200);
+    }
+
+    .sidebar-header h1 {
+      font-size: 1.5rem;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .sidebar-header p {
+      font-size: 0.875rem;
+      color: var(--gray-600);
+    }
+
+    .toc {
+      list-style: none;
+    }
+
+    .toc li {
+      margin-bottom: 0.5rem;
+    }
+
+    .toc a {
+      display: block;
+      padding: 0.5rem 1rem;
+      color: var(--gray-700);
+      text-decoration: none;
+      border-radius: 0.5rem;
+      transition: all 0.2s;
+      font-size: 0.95rem;
+    }
+
+    .toc a:hover {
+      background: var(--gray-100);
+      color: var(--accent);
+      transform: translateX(4px);
+    }
+
+    .toc a.active {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+      font-weight: 600;
+    }
+
+    .toc .subsection {
+      padding-left: 1rem;
+      font-size: 0.875rem;
+    }
+
+    .content {
+      flex: 1;
+      padding: 3rem 2rem;
+      max-width: 900px;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1rem;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #b8923d);
+      color: white;
+      box-shadow: 0 4px 15px rgba(201, 163, 78, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(201, 163, 78, 0.4);
+    }
+
+    .btn-secondary {
+      background: white;
+      color: var(--primary);
+      border: 2px solid var(--gray-300);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .section {
+      background: white;
+      border-radius: 1rem;
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      transition: transform 0.3s;
+    }
+
+    .section:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    }
+
+    h2 {
+      font-size: 2rem;
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 3px solid var(--accent);
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      color: var(--primary);
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    h4 {
+      font-size: 1.25rem;
+      color: var(--gray-800);
+      margin-top: 1.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    p {
+      margin-bottom: 1rem;
+      color: var(--gray-700);
+      font-size: 1.05rem;
+      line-height: 1.75;
+    }
+
+    ul, ol {
+      margin-bottom: 1.5rem;
+      padding-left: 1.5rem;
+    }
+
+    li {
+      margin-bottom: 0.75rem;
+      color: var(--gray-700);
+      line-height: 1.75;
+    }
+
+    .screenshot-placeholder {
+      background: linear-gradient(135deg, var(--gray-50) 25%, transparent 25%),
+                  linear-gradient(225deg, var(--gray-50) 25%, transparent 25%),
+                  linear-gradient(45deg, var(--gray-50) 25%, transparent 25%),
+                  linear-gradient(315deg, var(--gray-50) 25%, var(--gray-100) 25%);
+      background-size: 20px 20px;
+      background-position: 0 0, 10px 0, 10px -10px, 0px 10px;
+      border: 2px dashed var(--gray-300);
+      border-radius: 0.75rem;
+      padding: 3rem;
+      text-align: center;
+      margin: 1.5rem 0;
+      color: var(--gray-600);
+      font-style: italic;
+    }
+
+    .info-box {
+      background: linear-gradient(135deg, #e0f2fe 0%, #dbeafe 100%);
+      border-left: 4px solid #3b82f6;
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .info-box strong {
+      color: #1e40af;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .warning-box {
+      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+      border-left: 4px solid #f59e0b;
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .warning-box strong {
+      color: #b45309;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .step-card {
+      background: var(--gray-50);
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      margin: 1rem 0;
+      border-left: 4px solid var(--accent);
+    }
+
+    .step-number {
+      display: inline-block;
+      background: var(--accent);
+      color: white;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 32px;
+      font-weight: bold;
+      margin-right: 0.75rem;
+    }
+
+    footer {
+      background: white;
+      padding: 2rem;
+      text-align: center;
+      border-radius: 1rem;
+      margin-top: 3rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    footer p {
+      margin: 0.5rem 0;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 1024px) {
+      .sidebar {
+        display: none;
+      }
+
+      .container {
+        display: block;
+      }
+
+      .content {
+        max-width: 100%;
+        padding: 2rem 1.5rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .section {
+        padding: 1.5rem;
+      }
+
+      h2 {
+        font-size: 1.75rem;
+      }
+
+      h3 {
+        font-size: 1.25rem;
+      }
+
+      .header-actions {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    @media print {
+      body {
+        background: white;
+      }
+
+      .sidebar,
+      .header-actions {
+        display: none;
+      }
+
+      .section {
+        box-shadow: none;
+        page-break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h1>📘 User Manual</h1>
+        <p>Rekha Library System</p>
+      </div>
+
+      <nav>
+        <ul class="toc">
+          <li><a href="#welcome">Welcome & Purpose</a></li>
+          <li><a href="#member-guide">Member Guide</a>
+            <ul class="toc subsection">
+              <li><a href="#member-signup">Sign Up & Onboarding</a></li>
+              <li><a href="#member-catalog">Browse Catalog</a></li>
+              <li><a href="#member-requests">Request Books</a></li>
+              <li><a href="#member-reservations">Manage Reservations</a></li>
+              <li><a href="#member-reviews">Write Reviews</a></li>
+            </ul>
+          </li>
+          <li><a href="#browsing">Browsing & Searching</a></li>
+          <li><a href="#staff-guide">Staff / Admin Guide</a>
+            <ul class="toc subsection">
+              <li><a href="#staff-dashboard">Dashboard Overview</a></li>
+              <li><a href="#staff-members">Member Management</a></li>
+              <li><a href="#staff-books">Book Management</a></li>
+              <li><a href="#staff-borrow">Borrow & Return</a></li>
+              <li><a href="#staff-approvals">Approvals</a></li>
+            </ul>
+          </li>
+          <li><a href="#workflows">Common Workflows</a></li>
+          <li><a href="#troubleshooting">Troubleshooting & FAQ</a></li>
+          <li><a href="#policies">Policies & Contact</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <div id="manual-content">
+        <div class="header-actions">
+          <button class="btn btn-primary" onclick="window.print()">
+            🖨️ Print Page
+          </button>
+          <button class="btn btn-secondary" onclick="alert('PDF download feature coming soon!')">
+            📥 Download PDF
+          </button>
+        </div>
+
+        <section id="welcome" class="section">
+          <h2>Welcome & Purpose</h2>
+          <p>
+            Welcome to <strong>Rekha</strong>, the comprehensive library management system designed exclusively
+            for <strong>Risk Management</strong>. This system streamlines every aspect of library operations,
+            from cataloging books to tracking borrowing and managing member accounts.
+          </p>
+
+          <div class="info-box">
+            <strong>🎯 Key Features</strong>
+            <p>Automated book tracking, member management, real-time analytics, intelligent search,
+            automated fine calculation, reservation system, and comprehensive reporting.</p>
+          </div>
+
+          <p>
+            This manual will guide you through all features and workflows, whether you're a library member
+            looking to borrow books or a staff member managing the entire system.
+          </p>
+
+          <div class="screenshot-placeholder">
+            [Screenshot: Homepage Hero Section]
+          </div>
+        </section>
+
+        <section id="member-guide" class="section">
+          <h2>Member Guide</h2>
+          <p>
+            As a library member, you have access to browse the catalog, request books, make reservations,
+            and submit reviews. Here's how to get started:
+          </p>
+
+          <h3 id="member-signup">Sign Up & Onboarding</h3>
+
+          <div class="step-card">
+            <h4><span class="step-number">1</span>Create Your Account</h4>
+            <p>
+              Click the <strong>"Member Sign Up"</strong> button on the homepage. Fill in your details
+              including full name, email, phone number, and choose your membership type (Standard or Premium).
+            </p>
+          </div>
+
+          <div class="step-card">
+            <h4><span class="step-number">2</span>Complete Onboarding Form</h4>
+            <p>
+              After registration, submit the onboarding form with your address and additional information.
+              Your application will be reviewed by library staff.
+            </p>
+          </div>
+
+          <div class="step-card">
+            <h4><span class="step-number">3</span>Wait for Approval</h4>
+            <p>
+              Staff will review your application within 1-2 business days. You'll receive an email
+              notification once approved. You can then log in and start using the library!
+            </p>
+          </div>
+
+          <div class="screenshot-placeholder">
+            [Screenshot: Member Sign Up Form]
+          </div>
+
+          <h3 id="member-catalog">Browse Book Catalog</h3>
+          <p>
+            Once logged in, navigate to the <strong>"Book Catalog"</strong> tab to explore our collection:
+          </p>
+          <ul>
+            <li>View all available books with details like title, author, ISBN, and category</li>
+            <li>Check availability status (Available, Borrowed, Reserved)</li>
+            <li>Use the search bar to find specific books by title or author</li>
+            <li>Filter books by category or availability</li>
+          </ul>
+
+          <div class="screenshot-placeholder">
+            [Screenshot: Book Catalog View]
+          </div>
+
+          <h3 id="member-requests">Request Books to Borrow</h3>
+          <p>
+            To borrow a book, you need to submit an issue request:
+          </p>
+          <ol>
+            <li>Find the book you want in the catalog</li>
+            <li>Click the <strong>"Request to Borrow"</strong> button</li>
+            <li>Your request will be sent to library staff for approval</li>
+            <li>Once approved, you'll be notified and the book will be marked as issued to you</li>
+            <li>You have 14 days to return the book from the issue date</li>
+          </ol>
+
+          <div class="warning-box">
+            <strong>⚠️ Important:</strong>
+            You can track all your requests in the "My Issue Requests" tab. Make sure to return
+            books on time to avoid fines!
+          </div>
+
+          <h3 id="member-reservations">Manage Reservations</h3>
+          <p>
+            If a book is currently borrowed, you can reserve it for future borrowing:
+          </p>
+          <ul>
+            <li>Click "Reserve" on any borrowed book in the catalog</li>
+            <li>You'll be added to the reservation queue</li>
+            <li>When the book becomes available, you'll be notified</li>
+            <li>View all your reservations in the "My Reservations" tab</li>
+          </ul>
+
+          <h3 id="member-reviews">Write Book Reviews</h3>
+          <p>
+            Share your thoughts on books you've read:
+          </p>
+          <ol>
+            <li>Go to the <strong>"My Reviews"</strong> tab</li>
+            <li>Click "Write a Review" and select a book</li>
+            <li>Rate the book from 1-5 stars</li>
+            <li>Write your review (optional but encouraged)</li>
+            <li>Submit for staff approval</li>
+          </ol>
+
+          <div class="info-box">
+            <strong>💡 Tip:</strong>
+            Approved reviews help other members discover great books. Be honest and constructive!
+          </div>
+
+          <div class="screenshot-placeholder">
+            [Screenshot: Write Review Form]
+          </div>
+        </section>
+
+        <section id="browsing" class="section">
+          <h2>Browsing & Searching</h2>
+          <p>
+            Rekha offers powerful search and filter capabilities to help you find exactly what you need:
+          </p>
+
+          <h3>Search Features</h3>
+          <ul>
+            <li><strong>Quick Search:</strong> Use the search bar at the top of any page</li>
+            <li><strong>Advanced Filters:</strong> Filter by category, availability, author, or publication year</li>
+            <li><strong>Sort Options:</strong> Sort results by title, author, newest, or most popular</li>
+            <li><strong>Real-time Results:</strong> See results instantly as you type</li>
+          </ul>
+
+          <h3>Category Navigation</h3>
+          <p>Browse books by category:</p>
+          <ul>
+            <li>Finance & Banking</li>
+            <li>Risk Management</li>
+            <li>Business & Economics</li>
+            <li>Technology & IT</li>
+            <li>Professional Development</li>
+            <li>General Reference</li>
+          </ul>
+
+          <div class="screenshot-placeholder">
+            [Screenshot: Search and Filter Interface]
+          </div>
+        </section>
+
+        <section id="staff-guide" class="section">
+          <h2>Staff / Admin Guide</h2>
+          <p>
+            Staff members have access to comprehensive tools for managing the entire library system.
+            Here's your complete guide:
+          </p>
+
+          <h3 id="staff-dashboard">Dashboard Overview</h3>
+          <p>
+            The staff dashboard provides a bird's-eye view of library operations:
+          </p>
+          <ul>
+            <li><strong>Key Metrics:</strong> Total books, active members, current borrows, overdue items</li>
+            <li><strong>Quick Actions:</strong> Add new book, register member, process return</li>
+            <li><strong>Recent Activity:</strong> Latest member registrations, book additions, returns</li>
+            <li><strong>Alerts:</strong> Overdue books, pending approvals, low stock items</li>
+          </ul>
+
+          <div class="screenshot-placeholder">
+            [Screenshot: Staff Dashboard]
+          </div>
+
+          <h3 id="staff-members">Member Management</h3>
+
+          <h4>Viewing Members</h4>
+          <p>
+            Navigate to the <strong>Members</strong> tab to see all registered members. You can:
+          </p>
+          <ul>
+            <li>View complete member profiles with contact information</li>
+            <li>Check membership type and join date</li>
+            <li>See borrowing history and current status</li>
+            <li>Search and filter members by name, email, or status</li>
+          </ul>
+
+          <h4>Approving Onboarding Requests</h4>
+          <div class="step-card">
+            <h4><span class="step-number">1</span>Review Pending Applications</h4>
+            <p>
+              Go to <strong>Onboarding Approval</strong> to see all pending member applications.
+            </p>
+          </div>
+
+          <div class="step-card">
+            <h4><span class="step-number">2</span>Verify Information</h4>
+            <p>
+              Review the applicant's details, address, and membership type selection.
+            </p>
+          </div>
+
+          <div class="step-card">
+            <h4><span class="step-number">3</span>Approve or Reject</h4>
+            <p>
+              Click "Approve" to activate the membership or "Reject" with a reason if needed.
+            </p>
+          </div>
+
+          <h3 id="staff-books">Book Management</h3>
+
+          <h4>Adding New Books</h4>
+          <ol>
+            <li>Navigate to the <strong>Books</strong> tab</li>
+            <li>Click "Add New Book"</li>
+            <li>Fill in all required fields: Title, Author, ISBN, Category, Publisher, Publication Year</li>
+            <li>Set the total copies available</li>
+            <li>Add description and location (shelf number)</li>
+            <li>Click "Save" to add the book to the catalog</li>
+          </ol>
+
+          <h4>Editing Book Details</h4>
+          <p>
+            You can update book information, adjust copy counts, or change availability status at any time.
+          </p>
+
+          <h4>Approving Book Requests</h4>
+          <p>
+            Members can request new books to be added to the library. Review these in
+            <strong>Book Request Approval</strong>:
+          </p>
+          <ul>
+            <li>See requested book details and member information</li>
+            <li>Research if the book fits library collection goals</li>
+            <li>Approve to add to procurement list or reject with explanation</li>
+          </ul>
+
+          <div class="screenshot-placeholder">
+            [Screenshot: Book Management Interface]
+          </div>
+
+          <h3 id="staff-borrow">Borrow & Return Management</h3>
+
+          <h4>Issuing Books (Borrow Process)</h4>
+          <div class="step-card">
+            <h4><span class="step-number">1</span>Review Issue Requests</h4>
+            <p>
+              Check <strong>Issue Request Approval</strong> for pending borrow requests from members.
+            </p>
+          </div>
+
+          <div class="step-card">
+            <h4><span class="step-number">2</span>Verify Availability</h4>
+            <p>
+              Confirm the book is available and the member has no outstanding fines or overdue books.
+            </p>
+          </div>
+
+          <div class="step-card">
+            <h4><span class="step-number">3</span>Approve Request</h4>
+            <p>
+              Click "Approve" - the system automatically creates a borrow record with a 14-day due date
+              and reduces available book count.
+            </p>
+          </div>
+
+          <h4>Processing Returns</h4>
+          <div class="step-card">
+            <h4><span class="step-number">1</span>Go to Borrow & Return Tab</h4>
+            <p>
+              View all active borrows with member and book details.
+            </p>
+          </div>
+
+          <div class="step-card">
+            <h4><span class="step-number">2</span>Find the Return</h4>
+            <p>
+              Search for the member or book title to locate the borrow record.
+            </p>
+          </div>
+
+          <div class="step-card">
+            <h4><span class="step-number">3</span>Mark as Returned</h4>
+            <p>
+              Click "Return" button - the system automatically updates status, increases book count,
+              and calculates any fines for late returns.
+            </p>
+          </div>
+
+          <div class="info-box">
+            <strong>💡 Automated Workflows:</strong>
+            When you approve an issue request, the system automatically creates the borrow record
+            and it appears in the Borrow & Return tab. No manual entry needed!
+          </div>
+
+          <h3 id="staff-approvals">Managing Approvals</h3>
+
+          <p>Staff have four main approval workflows:</p>
+
+          <h4>1. Onboarding Approval</h4>
+          <p>Review and approve new member applications</p>
+
+          <h4>2. Book Request Approval</h4>
+          <p>Review member requests for new books to add to the library</p>
+
+          <h4>3. Issue Request Approval</h4>
+          <p>Approve member requests to borrow books</p>
+
+          <h4>4. Review Approval</h4>
+          <p>Moderate and approve book reviews before they're published</p>
+
+          <div class="warning-box">
+            <strong>⚠️ Best Practices:</strong>
+            Review requests daily to maintain good service levels. Aim to process requests
+            within 24 hours of submission.
+          </div>
+
+          <div class="screenshot-placeholder">
+            [Screenshot: Approval Dashboard]
+          </div>
+        </section>
+
+        <section id="workflows" class="section">
+          <h2>Common Workflows</h2>
+
+          <h3>Complete Borrowing Workflow</h3>
+          <ol>
+            <li><strong>Member:</strong> Searches catalog and requests book</li>
+            <li><strong>System:</strong> Creates issue request with "pending" status</li>
+            <li><strong>Staff:</strong> Reviews and approves request</li>
+            <li><strong>System:</strong> Auto-creates borrow record, sets due date, reduces book count</li>
+            <li><strong>Member:</strong> Collects book from library</li>
+            <li><strong>Member:</strong> Returns book before due date</li>
+            <li><strong>Staff:</strong> Marks as returned in system</li>
+            <li><strong>System:</strong> Updates status, increases book count, calculates fines if late</li>
+          </ol>
+
+          <h3>New Member Registration Workflow</h3>
+          <ol>
+            <li><strong>User:</strong> Completes sign-up form with email and password</li>
+            <li><strong>System:</strong> Creates authentication account</li>
+            <li><strong>User:</strong> Submits onboarding form with personal details</li>
+            <li><strong>Staff:</strong> Reviews application in Onboarding Approval</li>
+            <li><strong>Staff:</strong> Approves application</li>
+            <li><strong>System:</strong> Updates member status to "active"</li>
+            <li><strong>Member:</strong> Can now access full member features</li>
+          </ol>
+
+          <h3>Book Reservation Workflow</h3>
+          <ol>
+            <li><strong>Member:</strong> Finds borrowed book and clicks "Reserve"</li>
+            <li><strong>System:</strong> Creates reservation with queue position</li>
+            <li><strong>Current Borrower:</strong> Returns the book</li>
+            <li><strong>System:</strong> Notifies next person in reservation queue</li>
+            <li><strong>Reserved Member:</strong> Has priority to request the book</li>
+          </ol>
+
+          <h3>Overdue Book Management</h3>
+          <ol>
+            <li><strong>System:</strong> Automatically marks books as overdue after due date</li>
+            <li><strong>Staff:</strong> Views overdue list in Overdue tab</li>
+            <li><strong>Staff:</strong> Contacts member about overdue book</li>
+            <li><strong>Member:</strong> Returns book</li>
+            <li><strong>System:</strong> Calculates fine based on days overdue</li>
+            <li><strong>Staff:</strong> Collects fine payment and marks as paid in Fines tab</li>
+          </ol>
+        </section>
+
+        <section id="troubleshooting" class="section">
+          <h2>Troubleshooting & FAQ</h2>
+
+          <h3>Common Issues</h3>
+
+          <h4>Q: I can't log in to my account</h4>
+          <p>
+            <strong>A:</strong> First, verify you're using the correct email and password. If you've
+            forgotten your password, use the "Forgot Password" link. If you just signed up, wait for
+            staff approval of your onboarding form - you won't have full access until approved.
+          </p>
+
+          <h4>Q: My book request wasn't approved, why?</h4>
+          <p>
+            <strong>A:</strong> Check if you have any overdue books or unpaid fines. Also ensure the
+            book is actually available (not showing as "Borrowed"). Contact library staff for specific
+            reasons if your request was rejected.
+          </p>
+
+          <h4>Q: How do I cancel a reservation?</h4>
+          <p>
+            <strong>A:</strong> Go to your "My Reservations" tab, find the reservation, and click
+            "Cancel". This will remove you from the queue and allow the next person to reserve.
+          </p>
+
+          <h4>Q: The system shows I have an overdue book but I returned it</h4>
+          <p>
+            <strong>A:</strong> Staff may not have processed the return yet. Contact library staff
+            to verify - they can check the physical return and update the system.
+          </p>
+
+          <h4>Q: How are fines calculated?</h4>
+          <p>
+            <strong>A:</strong> Fines are automatically calculated when books are returned late.
+            The standard rate is set by library policy. View your fines in the member portal or
+            staff can check the Fines tab.
+          </p>
+
+          <h4>Q: Can I borrow multiple books at once?</h4>
+          <p>
+            <strong>A:</strong> Yes! You can submit multiple issue requests. However, your total
+            active borrows may be limited based on your membership type (Standard vs Premium).
+          </p>
+
+          <h4>Q: My review wasn't published</h4>
+          <p>
+            <strong>A:</strong> All reviews require staff approval before being published. This
+            ensures quality and appropriateness. If rejected, staff will provide feedback.
+          </p>
+
+          <h3>Staff Troubleshooting</h3>
+
+          <h4>Q: A book shows as borrowed but the member claims they returned it</h4>
+          <p>
+            <strong>A:</strong> Check the Borrow & Return tab. If you physically have the book,
+            click the "Return" button to update the system. Always verify physical returns match
+            system records.
+          </p>
+
+          <h4>Q: Book counts don't match physical inventory</h4>
+          <p>
+            <strong>A:</strong> Use the Books tab to edit book records and adjust the total copies
+            and available copies. Conduct regular inventory audits to keep counts accurate.
+          </p>
+
+          <h4>Q: System performance is slow</h4>
+          <p>
+            <strong>A:</strong> Clear your browser cache and refresh. If issues persist, contact
+            the system administrator. The system is optimized for performance but may need maintenance.
+          </p>
+
+          <div class="info-box">
+            <strong>💡 Need More Help?</strong>
+            <p>Contact the library administrator or IT support team for technical issues not covered here.</p>
+          </div>
+        </section>
+
+        <section id="policies" class="section">
+          <h2>Policies & Contact</h2>
+
+          <h3>Library Policies</h3>
+
+          <h4>Borrowing Periods</h4>
+          <ul>
+            <li>Standard loan period: 14 days from issue date</li>
+            <li>Renewals: May be granted based on demand (contact staff)</li>
+            <li>Maximum active borrows: Varies by membership type</li>
+          </ul>
+
+          <h4>Fines & Penalties</h4>
+          <ul>
+            <li>Late returns: Fine calculated per day overdue</li>
+            <li>Lost books: Member responsible for replacement cost</li>
+            <li>Damaged books: Assessed on case-by-case basis</li>
+            <li>Members with outstanding fines cannot borrow new books</li>
+          </ul>
+
+          <h4>Membership Types</h4>
+          <ul>
+            <li><strong>Standard:</strong> Basic access, standard borrowing limits</li>
+            <li><strong>Premium:</strong> Extended borrowing limits, priority reservations</li>
+          </ul>
+
+          <h4>Code of Conduct</h4>
+          <ul>
+            <li>Treat library materials with care</li>
+            <li>Return books on time</li>
+            <li>Respect other members and staff</li>
+            <li>No food or drinks near library materials</li>
+            <li>Maintain a quiet environment in reading areas</li>
+          </ul>
+
+          <h3>Contact Information</h3>
+          <div class="info-box">
+            <strong>📧 Library Administration</strong>
+            <p>Email: library@riskmanagement.edu</p>
+            <p>Phone: [Insert Phone Number]</p>
+            <p>Office Hours: Monday-Friday, 9:00 AM - 5:00 PM</p>
+          </div>
+
+          <div class="info-box">
+            <strong>💻 Technical Support</strong>
+            <p>For system issues or bugs, contact IT support</p>
+            <p>Email: it-support@riskmanagement.edu</p>
+          </div>
+
+          <h3>About This System</h3>
+          <p>
+            Rekha Library Management System was created by <strong>Abhimanyu Mathur</strong>
+            exclusively for Risk Management. The system is designed to provide a modern, efficient,
+            and user-friendly experience for both library staff and members.
+          </p>
+
+          <div class="screenshot-placeholder">
+            [Screenshot: Contact Information Page]
+          </div>
+        </section>
+
+        <footer>
+          <p><strong>Rekha Library Management System</strong></p>
+          <p>Last Updated: November 30, 2025</p>
+          <p>Version 1.0</p>
+          <p>© 2025 Risk Management. All rights reserved.</p>
+          <p style="margin-top: 1rem; color: var(--gray-600);">
+            Created by Abhimanyu Mathur
+          </p>
+        </footer>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const tocLinks = document.querySelectorAll('.toc a');
+
+      tocLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          tocLinks.forEach(l => l.classList.remove('active'));
+          this.classList.add('active');
+        });
+      });
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const id = entry.target.getAttribute('id');
+            tocLinks.forEach(link => {
+              link.classList.remove('active');
+              if (link.getAttribute('href') === `#${id}`) {
+                link.classList.add('active');
+              }
+            });
+          }
+        });
+      }, { threshold: 0.5 });
+
+      document.querySelectorAll('section[id]').forEach(section => {
+        observer.observe(section);
+      });
+    });
+  </script>
+</body>
+</html>
