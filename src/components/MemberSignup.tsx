@@ -14,7 +14,7 @@ export default function MemberSignup({ onBack }: MemberSignupProps) {
     confirmPassword: '',
     phone: '',
     address: '',
-    membership_type: 'student' as 'student' | 'faculty' | 'public',
+    membership_type: 'Staff' as 'Staff' | 'faculty' | 'public',
   });
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
