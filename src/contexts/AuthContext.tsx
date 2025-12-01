@@ -14,7 +14,7 @@ interface Member {
   id: number;
   name: string;
   email: string;
-  membership_type: 'student' | 'faculty' | 'public';
+  membership_type: 'rmd_staff' | 'other_staff' | 'public';
   phone: string | null;
   address: string | null;
 }

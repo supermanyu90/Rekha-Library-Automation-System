@@ -24,7 +24,7 @@ export default function Members() {
     full_name: '',
     email: '',
     phone: '',
-    membership_type: 'student',
+    membership_type: 'rmd_staff',
     status: 'pending',
   });
 
@@ -71,7 +71,7 @@ export default function Members() {
 
       setShowModal(false);
       setEditingMember(null);
-      setFormData({ full_name: '', email: '', phone: '', membership_type: 'student', status: 'pending' });
+      setFormData({ full_name: '', email: '', phone: '', membership_type: 'rmd_staff', status: 'pending' });
       fetchMembers();
     } catch (error) {
       console.error('Error saving member:', error);
@@ -125,7 +125,7 @@ export default function Members() {
           <button
             onClick={() => {
               setEditingMember(null);
-              setFormData({ full_name: '', email: '', phone: '', membership_type: 'student', status: 'pending' });
+              setFormData({ full_name: '', email: '', phone: '', membership_type: 'rmd_staff', status: 'pending' });
               setShowModal(true);
             }}
             className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
@@ -250,9 +250,9 @@ export default function Members() {
                   onChange={(e) => setFormData({ ...formData, membership_type: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 >
-                  <option value="student">Student</option>
-                  <option value="faculty">Faculty</option>
-                  <option value="external">External</option>
+                  <option value="rmd_staff">RMD Staff</option>
+                  <option value="other_staff">Other Staff</option>
+                  <option value="public">Public</option>
                 </select>
               </div>
               <div>

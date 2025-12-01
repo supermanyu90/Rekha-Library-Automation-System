@@ -53,7 +53,7 @@ export type Database = {
           full_name: string
           email: string
           phone: string | null
-          membership_type: 'student' | 'faculty' | 'public'
+          membership_type: 'rmd_staff' | 'other_staff' | 'public'
           join_date: string
           status: string
           user_id: string | null
@@ -63,7 +63,7 @@ export type Database = {
           full_name: string
           email: string
           phone?: string | null
-          membership_type: 'student' | 'faculty' | 'public'
+          membership_type: 'rmd_staff' | 'other_staff' | 'public'
           join_date?: string
           status?: string
           user_id?: string | null
@@ -73,7 +73,7 @@ export type Database = {
           full_name?: string
           email?: string
           phone?: string | null
-          membership_type?: 'student' | 'faculty' | 'public'
+          membership_type?: 'rmd_staff' | 'other_staff' | 'public'
           join_date?: string
           status?: string
           user_id?: string | null
@@ -211,7 +211,7 @@ export type Database = {
           email: string
           phone: string | null
           address: string | null
-          membership_type: 'student' | 'faculty' | 'public'
+          membership_type: 'rmd_staff' | 'other_staff' | 'public'
           status: string
           submitted_at: string
           reviewed_at: string | null
@@ -223,7 +223,7 @@ export type Database = {
           email: string
           phone?: string | null
           address?: string | null
-          membership_type: 'student' | 'faculty' | 'public'
+          membership_type: 'rmd_staff' | 'other_staff' | 'public'
           status?: string
           submitted_at?: string
           reviewed_at?: string | null
@@ -235,7 +235,7 @@ export type Database = {
           email?: string
           phone?: string | null
           address?: string | null
-          membership_type?: 'student' | 'faculty' | 'public'
+          membership_type?: 'rmd_staff' | 'other_staff' | 'public'
           status?: string
           submitted_at?: string
           reviewed_at?: string | null

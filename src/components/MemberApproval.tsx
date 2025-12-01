@@ -8,7 +8,7 @@ interface PendingMember {
   full_name: string;
   email: string;
   phone: string | null;
-  membership_type: 'student' | 'faculty' | 'public';
+  membership_type: 'rmd_staff' | 'other_staff' | 'public';
   status: 'pending' | 'active' | 'suspended';
   join_date: string;
   user_id: string | null;

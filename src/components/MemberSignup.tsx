@@ -14,7 +14,7 @@ export default function MemberSignup({ onBack }: MemberSignupProps) {
     confirmPassword: '',
     phone: '',
     address: '',
-    membership_type: 'Staff' as 'Staff' | 'faculty' | 'public',
+    membership_type: 'rmd_staff' as 'rmd_staff' | 'other_staff' | 'public',
   });
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -232,8 +232,8 @@ export default function MemberSignup({ onBack }: MemberSignupProps) {
                   onChange={(e) => setFormData({ ...formData, membership_type: e.target.value as any })}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#C9A34E] focus:border-transparent"
                 >
-                  <option value="student">Student</option>
-                  <option value="faculty">Faculty</option>
+                  <option value="rmd_staff">RMD Staff</option>
+                  <option value="other_staff">Other Staff</option>
                   <option value="public">Public</option>
                 </select>
               </div>

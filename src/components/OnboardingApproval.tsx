@@ -9,7 +9,7 @@ interface OnboardingForm {
   email: string;
   phone: string | null;
   address: string | null;
-  membership_type: 'student' | 'faculty' | 'public';
+  membership_type: 'rmd_staff' | 'other_staff' | 'public';
   reason: string | null;
   status: 'pending' | 'approved' | 'rejected';
   reviewed_by: number | null;

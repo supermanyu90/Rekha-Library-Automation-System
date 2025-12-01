@@ -12,7 +12,7 @@ export default function MemberOnboarding({ onBack }: MemberOnboardingProps) {
     email: '',
     phone: '',
     address: '',
-    membership_type: 'student' as 'student' | 'faculty' | 'public',
+    membership_type: 'rmd_staff' as 'rmd_staff' | 'other_staff' | 'public',
     reason: '',
   });
   const [loading, setLoading] = useState(false);
