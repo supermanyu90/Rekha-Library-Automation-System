@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { BookOpen, LogOut, Users, BookMarked, ClipboardList, DollarSign, AlertCircle, BarChart3, User, UserPlus, Clock, Star, UserCheck, TrendingUp, BookPlus, BookCheck } from 'lucide-react';
+import ConnectionStatus from './ConnectionStatus';
 
 interface LayoutProps {
   children: ReactNode;
@@ -31,8 +32,10 @@ export default function Layout({ children, activeTab, onTabChange }: LayoutProps
   const availableTabs = tabs.filter(tab => staff && tab.roles.includes(staff.role));
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <nav className="bg-white border-b border-gray-200 shadow-sm">
+    <>
+      <ConnectionStatus />
+      <div className="min-h-screen bg-gray-50">
+        <nav className="bg-white border-b border-gray-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-3">
@@ -90,5 +93,6 @@ export default function Layout({ children, activeTab, onTabChange }: LayoutProps
         </div>
       </div>
     </div>
+    </>
   );
 }

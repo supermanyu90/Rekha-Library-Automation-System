@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { BookOpen, LogOut, BookMarked, Clock, Star, BookPlus, BookCheck } from 'lucide-react';
+import ConnectionStatus from './ConnectionStatus';
 
 interface MemberLayoutProps {
   children: ReactNode;
@@ -20,8 +21,10 @@ export default function MemberLayout({ children, activeTab, onTabChange }: Membe
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <nav className="bg-white border-b border-gray-200 shadow-sm">
+    <>
+      <ConnectionStatus />
+      <div className="min-h-screen bg-gray-50">
+        <nav className="bg-white border-b border-gray-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-3">
@@ -79,5 +82,6 @@ export default function MemberLayout({ children, activeTab, onTabChange }: Membe
         </div>
       </div>
     </div>
+    </>
   );
 }

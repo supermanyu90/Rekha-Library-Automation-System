@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { BookOpen, ArrowLeft } from 'lucide-react';
+import ConnectionStatus from './ConnectionStatus';
 
 interface LoginProps {
   onBack: () => void;
@@ -34,8 +35,10 @@ export default function Login({ onBack }: LoginProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-8">
+    <>
+      <ConnectionStatus />
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center p-4">
+        <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-8">
         <button
           onClick={onBack}
           className="inline-flex items-center space-x-2 text-gray-600 hover:text-gray-900 mb-6 transition"
@@ -110,5 +113,6 @@ export default function Login({ onBack }: LoginProps) {
         </div>
       </div>
     </div>
+    </>
   );
 }

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { BookOpen, ArrowLeft, CheckCircle } from 'lucide-react';
+import ConnectionStatus from './ConnectionStatus';
 
 interface MemberSignupProps {
   onBack: () => void;
@@ -96,7 +97,9 @@ export default function MemberSignup({ onBack }: MemberSignupProps) {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-blue-50 flex items-center justify-center p-4">
+      <>
+        <ConnectionStatus />
+        <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-blue-50 flex items-center justify-center p-4">
         <div className="max-w-2xl w-full bg-white rounded-2xl shadow-xl p-8 text-center">
           <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
             <CheckCircle className="w-12 h-12 text-green-600" />
@@ -118,11 +121,14 @@ export default function MemberSignup({ onBack }: MemberSignupProps) {
           </button>
         </div>
       </div>
+      </>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-blue-50">
+    <>
+      <ConnectionStatus />
+      <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-blue-50">
       <div className="max-w-4xl mx-auto px-4 py-8">
         <button
           onClick={onBack}
@@ -279,5 +285,6 @@ export default function MemberSignup({ onBack }: MemberSignupProps) {
         </div>
       </div>
     </div>
+    </>
   );
 }
