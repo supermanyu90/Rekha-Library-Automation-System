@@ -63,16 +63,8 @@ npm run dev
 npm run build
 ```
 
-### Test Accounts
+### URL: https://supermanyu90-123lib-ux65.bolt.host/
 
-The database comes pre-loaded with test accounts for each role:
-
-| Role | Email | Password |
-|------|-------|----------|
-| Superadmin | `superadmin@library.com` | `superadmin123` |
-| Admin | `admin@library.com` | `admin123` |
-| Head Librarian | `headlibrarian@library.com` | `headlib123` |
-| Librarian | `librarian@library.com` | `librarian123` |
 
 **Note:** The database is persistent and hosted on Supabase. All data, including these test accounts and sample books, will remain available even after redeploying from GitHub.
 
